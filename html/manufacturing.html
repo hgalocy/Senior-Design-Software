@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/styleAll.css">
+    <link rel="stylesheet" href="../css/manufacturing.css">
+    <script defer src="../js/manufacturing.js"></script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Pancake</title>
+  </head>
+  <body>
+    <div class="menu-bar">
+        <div class="connection">
+          <h3>Connection:</h3>
+          <h3 id="connectionIndicator">Not Connected :(</h3>
+        </div>
+        <h3 class="menu-tests">Tests:</h3>
+        <div class="nav">
+          <ul class="nav-1">
+            <li><img src="../images/manufacturing.png" alt="" class="manufacturing-image"></li>
+            <li><img src="../images/diagnostic.png" alt="" class="diagnostic-image"></li>
+            <li><img src="../images/frequency.png" alt="" class="frequency-image"></li>
+          </ul>
+          <div class="nav-2">
+            <a href="manufacturing.html" class="manufacturing-option">Manufacturing</a>
+            <a href="diagnostic.html" class="diagnostic-option">Diagnostic</a>
+            <a href="frequency.html" class="frequency-option">Frequency<br>Response</a>
+          </div>
+        </div>
+        <button id="aboutBtn" type="button" class="about">About</button>
+    </div>
+    <div class="content">
+      <h1>Manufacturing Testing</h1>
+      <div class="manuf-body-1">
+        <!--specify excel file-->
+        <div class="input">
+          <button type="button" id="manufExcelBtn" class="file-button">Excel File</button>
+          <input id="manufExcelPath" class="file-path" placeholder="Please select an excel file." type="text">
+        </div>
+        <!--start test button-->
+        <button type="button" id="manufStartTestsBtn" class="green-button">Start Tests</button>
+      </div>
+      <div class="manuf-body-2">
+        <!--table of leds and related tests-->
+        <table class="manuf-tests">
+          <tr>
+            <th><div id="DCled" class="led"></div></th>
+            <th><div class="manuf-test-name">DC - Measure DC Values</div></th>
+          </tr>
+          <tr>
+            <th><div id="noiseled" class="led"></div></th>
+            <th><div class="manuf-test-name">Noise - Measure Idle Noise</div></th>
+          </tr>
+          <tr>
+            <th><div id="gainMidbandled" class="led"></div></th>
+            <th><div class="manuf-test-name">Gain - Measure Midband</div></th>
+          </tr>
+          <tr>
+            <th><div id="gainGuitarled" class="led"></div></th>
+            <th><div class="manuf-test-name">Gain - Guitar</div></th>
+          </tr>
+          <tr>
+            <th><div id="freqFlatled" class="led"></div></th>
+            <th><div class="manuf-test-name">Freq Resp, Flat</div></th>
+          </tr>
+          <tr>
+            <th><div id="freqBassled" class="led"></div></th>
+            <th><div class="manuf-test-name">Freq Resp, Bass</div></th>
+          </tr>
+          <tr>
+            <th><div id="freqTrebleled" class="led"></div></th>
+            <th><div class="manuf-test-name">Freq Resp, Treble</div></th>
+          </tr>
+          <tr>
+            <th><div id="freqPresled" class="led"></div></th>
+            <th><div class="manuf-test-name">Freq Resp, Pres</div></th>
+          </tr>
+          <tr>
+            <th><div id="responseled" class="led"></div></th>
+            <th><div class="manuf-test-name">Response - Aux</div></th>
+          </tr>
+          <tr>
+            <th><div id="powled" class="led"></div></th>
+            <th><div class="manuf-test-name">Output Power and Distortion</div></th>
+          </tr>
+        </table>
+        <!--list test results-->
+        <ul class="results-list">
+          <li>Test Results:</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+:root{
+    --main-background: #0D134B;
+    --menu-background: #172288;
+    --menu-secondary: #3f3f3f;
+    --green: #46BC4A;
+    --yellow: #ffe600;
+    --red: #ff0000;
+    --input-button: #8093D7;
+    --text-area: #c4c4c4;
+    --dark-text: #585656;
+    --darker-text: #1a1a1a;
+}
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif, Helvetica, Arial;
+    color: white;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 100;
+}
+body{
+    background-color: var(--main-background);
+    display: flex;
+    flex-direction: row;
+}
+a{
+    text-decoration:none;
+    width: 120px;
+    border-bottom: 2px solid transparent;
+}
+a:hover {
+    border-bottom: 2px #fff solid;
+}
+li{
+    list-style-type: none;
+}
+.menu-bar{
+    background-color: var(--menu-background);
+    width: 195px;
+    height: 568px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.connection{
+    background-color: var(--menu-secondary);
+    padding: 20px 0px;
+    text-align: center;
+}
+.menu-tests{
+    margin: 0px 15px;
+    font-size: 20px;
+}
+.nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.nav-1{
+    margin-right: -50px;
+}
+.manufacturing-image{
+    width: 50px;
+    height: 38px;
+    margin: 0px 0px 37px 7px;
+}
+.diagnostic-image{
+    width: 40px;
+    height: 40px;
+    margin: 0px 0px 37px 7px;
+}
+.frequency-image{
+    width: 40px;
+    height: 40px;
+    margin: 0px 0px 37px 7px;
+}
+.nav-2{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    font-size: 19px;
+    margin-left: 55px;
+}
+.manufacturing-option{
+    margin: -30px 0px 0px 0px;
+    padding-left: -10px;
+}
+.diagnostic-option{
+    margin: 20px 0px 0px 0px;
+}
+.frequency-option{
+    margin: 10px 0px 0px 0px;
+}
+.about{
+    background-color: var(--menu-secondary);
+    border: none;
+    padding: 29px 0px;
+}
+
+/*content*/
+h1{
+    border-bottom: 1px solid white;
+    width: 390px;
+    font-size: 30px;
+    margin: 10px 0px 10px 10px;
+}
+.file-button{
+    background-color: var(--input-button);
+    border: none;
+    border-radius: 20px;
+    padding: 6px 25px 5px 25px;
+}
+.file-path{
+    background-color: var(--text-area);
+    border: none;
+    outline: none;
+    color: var(--dark-text);
+    width: 500px;
+    padding: 2px 0px;
+    margin-left: -20px;
+    padding-left: 20px;
+    position: relative;
+    z-index: -1;
+}
+.green-button{
+    background-color: var(--green);
+    border: none;
+    padding: 15px 25px;
+    font-size: 25px;
+    border-radius: 20px;
+}
+.led{
+    background-color: var(--text-area);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+.results-list{
+    background-color: var(--text-area);
+}
+
