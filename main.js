@@ -7,7 +7,7 @@ function createWindow() {
     });
     win.removeMenu();
     win.loadFile('html/manufacturing.html');
-    //win.webContents.openDevTools(); //uncomment for debugging
+    win.webContents.openDevTools(); //uncomment for debugging
 }
 app.whenReady().then(() => {
     createWindow();
