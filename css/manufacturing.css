@@ -5,12 +5,12 @@
     display: flex;
     flex-direction: row;
 }
+.input{
+    margin: 10px 20px 10px 10px;
+}
 .manuf-body-2{
     display: flex;
     flex-direction: row;
-}
-.input{
-    margin: 10px 20px 10px 10px;
 }
 .manuf-tests{
     margin: 5px 70px 0px 90px;

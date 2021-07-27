@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="../css/styleAll.css">
     <link rel="stylesheet" href="../css/frequency.css">
     <script defer src="../js/diagnostic.js"></script>
+    <script defer src="../js/frequency.js"></script>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Pancake</title>
@@ -32,6 +33,106 @@
     </div>
     <div class="content">
       <h1>Frequency Response Testing</h1>
+      <div class="freq-body-1">
+        <!--specify excel file-->
+        <div class="input">
+          <button type="button" id="freqExcelBtn" class="file-button">Excel File</button>
+          <input id="manufExcelPath" class="file-path" placeholder="Please select an excel file." type="text">
+        </div>
+        <!--start test button-->
+        <button type="button" id="freqStartTestsBtn" class="green-button">Start Tests</button>
+      </div>
+      <!--all inputs-->
+      <div class="freq-body-2">
+        <!--text inputs-->
+        <table class="text-inputs">
+          <tr>
+            <th><label for="startFreqInput" class="input-label">Start Freq:</button></th>
+            <th><input id="startFreqInput" class="text-input" placeholder="Please enter a value..." type="text"></th>
+          </tr>
+          <tr>
+            <th><label for="stopFreqInput" class="input-label">Stop Freq:</button></th>
+            <th><input id="stopFreqInput" class="text-input" placeholder="Please enter a value..." type="text"></th>
+          </tr>
+          <tr>
+            <th><label for="pointsNumInput" class="input-label"># of Points:</button></th>
+            <th><input id="pointsNumInput" class="text-input" placeholder="Please enter a #..." type="text"></th>
+          </tr>
+        </table>
+        <!--drop downs-->
+        <table class="pots">
+          <tr>
+            <th>Pot 1:</th>
+            <th>
+              <div class="dropdown">
+                <button id="pot1DropBtn" class="dropbtn">Mode Selection...</button>
+                <ul id="pot1DropDown" class="dropdown-content">
+                  <li id="pot1CCW" class="pot1-drop-option">Counter-Clockwise</li>
+                  <li id="pot1CW" class="pot1-drop-option">Clockwise</li>
+                  <li id="pot1Mid" class="pot1-drop-option">Middle</li>
+                </ul>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th>Pot 2:</th>
+              <th>
+                <div class="dropdown">
+                  <button id="pot2DropBtn" class="dropbtn">Mode Selection...</button>
+                  <ul id="pot2DropDown" class="dropdown-content">
+                    <li id="pot2CCW" class="pot2-drop-option">Counter-Clockwise</li>
+                    <li id="pot2CW" class="pot2-drop-option">Clockwise</li>
+                    <li id="pot2Mid" class="pot2-drop-option">Middle</li>
+                  </ul>
+                </div>
+              </th>
+          </tr>
+          <tr>
+            <th>Pot 3:</th>
+              <th>
+                <div class="dropdown">
+                  <button id="pot3DropBtn" class="dropbtn">Mode Selection...</button>
+                  <ul id="pot3DropDown" class="dropdown-content">
+                    <li id="pot3CCW" class="pot3-drop-option">Counter-Clockwise</li>
+                    <li id="pot3CW" class="pot3-drop-option">Clockwise</li>
+                    <li id="pot3Mid" class="pot3-drop-option">Middle</li>
+                  </ul>
+                </div>
+              </th>
+          </tr>
+        </table>
+        <table class="presence-and-level">
+          <tr>
+            <th>Presence:</th>
+              <th>
+                <div class="dropdown">
+                  <button id="presenceDropBtn" class="dropbtn">Mode Selection...</button>
+                  <ul id="presenceDropDown" class="dropdown-content">
+                    <li id="presenceON" class="presence-drop-option">ON</li>
+                    <li id="presenceOFF" class="presence-drop-option">OFF</li>
+                  </ul>
+                </div>
+              </th>
+          </tr>
+          <tr>
+            <th>Input Level:</th>
+              <th>
+                <div class="dropdown">
+                  <button id="levelDropBtn" class="dropbtn">Mode Selection...</button>
+                  <ul id="levelDropDown" class="dropdown-content">
+                    <li id="level1" class="level-drop-option">level 1</li>
+                    <li id="level2" class="level-drop-option">level 2</li>
+                    <li id="level3" class="level-drop-option">level 3</li>
+                  </ul>
+                </div>
+              </th>
+            </tr>
+        </table>
+      </div>
+      <div class="freq-body-3">
+        <div class="graph">Graph</div>
+        <button type="button" id="freqSaveGraphBtn" class="blue-button">Save Graph</button>
+      </div>
     </div>
   </body>
 </html>

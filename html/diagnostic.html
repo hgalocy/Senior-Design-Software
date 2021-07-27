@@ -32,9 +32,11 @@
     </div>
     <div class="content">
       <h1>Diagnostic (Manual) Testing</h1>
-      <div class="diag-body-1">
-        <table class="pots-and-presence">
-            <tr>
+      <div class="diag-body">
+        <div class="diag-body-1">
+          <!--drop downs-->
+          <table class="pots-and-presence">
+              <tr>
                 <th>Pot 1:</th>
                 <th>
                   <div class="dropdown">
@@ -46,49 +48,62 @@
                     </ul>
                   </div>
                 </th>
-            </tr>
-            <tr>
-              <th>Pot 2:</th>
-                <th>
-                  <div class="dropdown">
-                    <button id="pot2DropBtn" class="dropbtn">Mode Selection...</button>
-                    <ul id="pot2DropDown" class="dropdown-content">
-                      <li id="pot2CCW" class="pot2-drop-option">Counter-Clockwise</li>
-                      <li id="pot2CW" class="pot2-drop-option">Clockwise</li>
-                      <li id="pot2Mid" class="pot2-drop-option">Middle</li>
-                    </ul>
-                  </div>
-                </th>
-            </tr>
-            <tr>
-              <th>Pot 3:</th>
-                <th>
-                  <div class="dropdown">
-                    <button id="pot3DropBtn" class="dropbtn">Mode Selection...</button>
-                    <ul id="pot3DropDown" class="dropdown-content">
-                      <li id="pot3CCW" class="pot3-drop-option">Counter-Clockwise</li>
-                      <li id="pot3CW" class="pot3-drop-option">Clockwise</li>
-                      <li id="pot3Mid" class="pot3-drop-option">Middle</li>
-                    </ul>
-                  </div>
-                </th>
-            </tr>
-            <tr>
-              <th>Presence:</th>
-                <th>
-                  <div class="dropdown">
-                    <button id="presenceDropBtn" class="dropbtn">Mode Selection...</button>
-                    <ul id="presenceDropDown" class="dropdown-content">
-                      <li id="presenceON" class="presence-drop-option">ON</li>
-                      <li id="presenceOFF" class="presence-drop-option">OFF</li>
-                    </ul>
-                  </div>
-                </th>
-            </tr>
-        </table>
-      </div>
-      <div class="diag-body-2">
-
+              </tr>
+              <tr>
+                <th>Pot 2:</th>
+                  <th>
+                    <div class="dropdown">
+                      <button id="pot2DropBtn" class="dropbtn">Mode Selection...</button>
+                      <ul id="pot2DropDown" class="dropdown-content">
+                        <li id="pot2CCW" class="pot2-drop-option">Counter-Clockwise</li>
+                        <li id="pot2CW" class="pot2-drop-option">Clockwise</li>
+                        <li id="pot2Mid" class="pot2-drop-option">Middle</li>
+                      </ul>
+                    </div>
+                  </th>
+              </tr>
+              <tr>
+                <th>Pot 3:</th>
+                  <th>
+                    <div class="dropdown">
+                      <button id="pot3DropBtn" class="dropbtn">Mode Selection...</button>
+                      <ul id="pot3DropDown" class="dropdown-content">
+                        <li id="pot3CCW" class="pot3-drop-option">Counter-Clockwise</li>
+                        <li id="pot3CW" class="pot3-drop-option">Clockwise</li>
+                        <li id="pot3Mid" class="pot3-drop-option">Middle</li>
+                      </ul>
+                    </div>
+                  </th>
+              </tr>
+              <tr>
+                <th>Presence:</th>
+                  <th>
+                    <div class="dropdown">
+                      <button id="presenceDropBtn" class="dropbtn">Mode Selection...</button>
+                      <ul id="presenceDropDown" class="dropdown-content">
+                        <li id="presenceON" class="presence-drop-option">ON</li>
+                        <li id="presenceOFF" class="presence-drop-option">OFF</li>
+                      </ul>
+                    </div>
+                  </th>
+              </tr>
+          </table>
+        </div>
+        <div class="diag-body-2">
+          <h2>Configure and Enable Test Signal Generator:</h2>
+          <!--text inputs for signal generator-->
+          <div class="input-value">
+            <label for="ampInput" class="input-label">Amplitude:</button>
+            <input id="ampInput" class="text-input" placeholder="Please enter a value..." type="text">
+          </div>
+          <div class="input-value">
+            <label for="ampInput" class="input-label">Frequency:</button>
+            <input id="freqInput" class="text-input" placeholder="Please enter a value..." type="text">
+          </div>
+          <button type="button" id="genSigBtn" class="green-button">Generate Signal</button>
+          <!--signal indicator pop up-->
+          <h3 id="signalIndicator">Generating Signal __pp at __Hz</h3>
+        </div>
       </div>
     </div>
   </body>

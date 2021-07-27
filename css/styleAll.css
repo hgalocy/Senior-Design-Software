@@ -5,6 +5,7 @@
     --green: #46BC4A;
     --yellow: #ffe600;
     --red: #ff0000;
+    --blue: #172CE7;
     --input-button: #8093D7;
     --text-area: #c4c4c4;
     --dark-text: #585656;
@@ -134,6 +135,13 @@ h1{
     font-size: 25px;
     border-radius: 20px;
 }
+.blue-button{
+    background-color: var(--blue);
+    border: none;
+    padding: 15px 25px;
+    font-size: 25px;
+    border-radius: 20px;
+}
 .led{
     background-color: var(--text-area);
     padding: 4px 12px;
@@ -142,7 +150,6 @@ h1{
 .results-list{
     background-color: var(--text-area);
 }
-
 
 .dropbtn {
     background-color: var(--input-button);
@@ -166,6 +173,7 @@ h1{
     position: absolute;
     background-color: var(--menu-secondary);
     width: 150px;
+    text-align: center;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
@@ -182,5 +190,22 @@ h1{
 }
 .dropdown li:hover {background-color: var(--dark-text);}
 .show {display: block;}
+
+.text-input{
+    color: white;
+    background-color: var(--input-button);
+    font-weight: 100;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    width: 160px;
+    height: 30px;
+    padding-left: 10px;
+}
+.text-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    font-weight: 100;
+  }
 
 

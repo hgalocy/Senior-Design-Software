@@ -1,4 +1,4 @@
-//open the drop down
+//open the drop down TODO: condense to one function
 const pot1DropBtn = document.getElementById("pot1DropBtn");
 pot1DropBtn.addEventListener("click", function() {
     document.getElementById("pot1DropDown").classList.toggle("show");
@@ -16,7 +16,7 @@ presenceDropBtn.addEventListener("click", function() {
     document.getElementById("presenceDropDown").classList.toggle("show");
 });
 
-//set dropdown to selected option
+//set dropdown to selected option TODO: condense to one function
 const pot1DropOption = document.getElementsByClassName("pot1-drop-option");
 for (var i = 0 ; i < pot1DropOption.length; i++) {
     let tmp = pot1DropOption[i];
@@ -59,3 +59,8 @@ window.onclick = function(event) {
         }
     }
 }
+
+const genSigBtn = document.getElementById("genSigBtn");
+genSigBtn.addEventListener("click", function(){
+    document.getElementById("signalIndicator").style.visibility = "visible";
+});
