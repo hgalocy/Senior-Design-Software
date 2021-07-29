@@ -38,6 +38,9 @@ li{
     list-style-type: none;
     cursor: pointer;
 }
+button{
+    cursor: pointer;
+}
 .menu-bar{
     background-color: var(--menu-background);
     width: 195px;
@@ -137,6 +140,13 @@ h1{
 }
 .blue-button{
     background-color: var(--blue);
+    border: none;
+    padding: 15px 25px;
+    font-size: 25px;
+    border-radius: 20px;
+}
+.red-button{
+    background-color: var(--red);
     border: none;
     padding: 15px 25px;
     font-size: 25px;

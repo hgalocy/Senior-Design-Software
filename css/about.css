@@ -1,0 +1,18 @@
+h1{
+    text-decoration: underline;
+    border: none;
+    width: auto;
+    height: auto;
+}
+body{
+    border: 10px solid var(--input-button);
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.information{
+    margin: 20px 30px;
+}
+
