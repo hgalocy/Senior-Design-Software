@@ -3,8 +3,8 @@ const { app, BrowserWindow, ipcMain } = require('electron')
 let win;
 function createWindow() {
     win = new BrowserWindow({
-        width: 1050,
-        height: 605,
+        width: 1040,
+        height: 594,
         icon:'guitar.png',
         webPreferences: {
             nodeIntegration : true,
@@ -12,9 +12,14 @@ function createWindow() {
         }
     });
     win.removeMenu();
+    win.setResizable(false);
     win.loadFile('html/manufacturing.html');
     //win.webContents.openDevTools(); //uncomment for debugging
+    win.on('will-move', (e) => { //account for wierd windows resizing bug
+        win.setSize(1040, 594);
+    });
 }
+
 app.whenReady().then(() => {
     createWindow();
     app.on('activate', function () {
