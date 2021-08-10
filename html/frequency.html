@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/styleAll.css">
     <link rel="stylesheet" href="../css/frequency.css">
-    <script defer src="../js/diagnostic.js"></script>
     <script defer src="../js/frequency.js"></script>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
@@ -115,18 +114,9 @@
               </th>
           </tr>
           <tr>
-            <th>Input Level:</th>
-              <th>
-                <div class="dropdown">
-                  <button id="levelDropBtn" class="dropbtn">Mode Selection...</button>
-                  <ul id="levelDropDown" class="dropdown-content">
-                    <li id="level1" class="level-drop-option">level 1</li>
-                    <li id="level2" class="level-drop-option">level 2</li>
-                    <li id="level3" class="level-drop-option">level 3</li>
-                  </ul>
-                </div>
-              </th>
-            </tr>
+            <th><label for="levelInput" class="input-label">Input Level:</button></th>
+            <th><input id="levelInput" class="text-input" placeholder="Please enter a value..." type="text"></th>
+          </tr>
         </table>
       </div>
       <div class="freq-body-3">

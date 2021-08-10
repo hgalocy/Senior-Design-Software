@@ -8,8 +8,7 @@ aboutBtn.addEventListener("click", function(){
     ipcRenderer.send("openWindow", arg);
 });
 
-
-//open the drop down TODO: condense to one function
+//open the drop down
 const pot1DropBtn = document.getElementById("pot1DropBtn");
 pot1DropBtn.addEventListener("click", function() {
     document.getElementById("pot1DropDown").classList.toggle("show");
@@ -27,7 +26,7 @@ presenceDropBtn.addEventListener("click", function() {
     document.getElementById("presenceDropDown").classList.toggle("show");
 });
 
-//set dropdown to selected option TODO: condense to one function
+//set dropdown to selected option
 const pot1DropOption = document.getElementsByClassName("pot1-drop-option");
 for (var i = 0 ; i < pot1DropOption.length; i++) {
     let tmp = pot1DropOption[i];
