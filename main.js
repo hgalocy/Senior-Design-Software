@@ -12,9 +12,9 @@ function createWindow() {
         }
     });
     win.removeMenu();
-    win.setResizable(false);
+    //win.setResizable(false);
     win.loadFile('html/manufacturing.html');
-    //win.webContents.openDevTools(); //uncomment for debugging
+    win.webContents.openDevTools(); //uncomment for debugging
     win.on('will-move', (e) => { //account for wierd windows resizing bug
         win.setSize(1040, 594);
     });
@@ -66,3 +66,33 @@ ipcMain.on("chooseFile", async (event, arg)=>{
     let file = await dialog.showOpenDialog(win, optionsF); //open the file explorer with specified options
     event.reply("fileChosen", file);
 })
+
+
+
+
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const port = new SerialPort('COM5', { baudRate: 9600 });
+const parser = port.pipe(new Readline({ delimiter: '\n' }));
+
+
+//Make port connection
+port.on("open", () => {
+    console.log('serial port open');
+});
+
+//communicate to arduino
+ipcMain.on("arduino", async(event, arg)=>{
+    console.log("main")
+    port.write('beans\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+        console.log('message written');
+    });
+});
+
+//prints whatever arduino prints
+parser.on('data', data =>{
+    console.log('got word from arduino:', data);
+});

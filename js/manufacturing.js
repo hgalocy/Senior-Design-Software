@@ -31,3 +31,10 @@ function chooseAFile(pathDisplay){
         }
     });
 }
+
+
+//start button
+document.getElementById("manufStartTestsBtn").addEventListener("click", function(){
+    ipcRenderer.send("arduino", ""); //send message to main.js to open file explorer to choose file
+    console.log("renderer");
+})

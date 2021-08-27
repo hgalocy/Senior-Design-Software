@@ -9,6 +9,10 @@
   "author": "Hannah Galocy",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^13.1.6"
+    "electron": "^13.1.6",
+    "electron-rebuild": "^3.2.0"
+  },
+  "dependencies": {
+    "johnny-five": "^2.1.0"
   }
 }
