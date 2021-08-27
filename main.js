@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 
 let win;
 function createWindow() {
@@ -31,7 +31,7 @@ app.on('window-all-closed', function () {
 });
 
 
-//open new window
+//open new child window
 let childWin;
 ipcMain.on("openWindow", function(event, arg){
     childWin = new BrowserWindow({
@@ -57,4 +57,12 @@ ipcMain.on("openWindow", function(event, arg){
 //close child window
 ipcMain.on("closeWindow", async(event, arg) =>{
     childWin.close();
+})
+
+//open file explorer
+ipcMain.on("chooseFile", async (event, arg)=>{
+    let filtersExt = [{name:'Excel File', extensions: ["csv"]}];
+    let optionsF = {properties:["createDirectory", "promptToCreate", "openFile"], filters:filtersExt};
+    let file = await dialog.showOpenDialog(win, optionsF); //open the file explorer with specified options
+    event.reply("fileChosen", file);
 })
