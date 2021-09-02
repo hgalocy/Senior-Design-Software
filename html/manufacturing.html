@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/styleAll.css">
     <link rel="stylesheet" href="../css/manufacturing.css">
+    <script src="../node_modules/confetti-js/dist/index.min.js"></script>
     <script defer src="../js/manufacturing.js"></script>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Pancake</title>
   </head>
   <body>
+    <canvas id="manuf-content"></canvas>
     <div class="menu-bar">
-        <div class="connection">
-          <h3>Connection:</h3>
-          <h3 id="connectionIndicator">Not Connected :(</h3>
-        </div>
+        <button id="connectionBtn" type="button" class="connection">Connection:<br>Not Connected :(</button>
         <h3 class="menu-tests">Tests:</h3>
         <div class="nav">
           <ul class="nav-1">
@@ -77,7 +76,7 @@
             <th><div class="manuf-test-name">Freq Resp, Pres</div></th>
           </tr>
           <tr>
-            <th><div id="responseled" class="led"></div></th>
+            <th><div id="auxled" class="led"></div></th>
             <th><div class="manuf-test-name">Response - Aux</div></th>
           </tr>
           <tr>

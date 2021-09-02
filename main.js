@@ -1,6 +1,12 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
 
+let path = "";
+let arduinoPort = "";
+let parserFlag = false;
 let win;
+
 function createWindow() {
     win = new BrowserWindow({
         width: 1040,
@@ -69,30 +75,115 @@ ipcMain.on("chooseFile", async (event, arg)=>{
 
 
 
+ipcMain.on("connect arduino", (event, arg) => {
+    // Promise approach
+    SerialPort.list().then(ports => {
+        let done = false
+        let count = 0
+        let allports = ports.length
+        ports.forEach(function(port) {
+            count = count+1
+            pm  = port.manufacturer
+        
+            if (typeof pm !== 'undefined' && pm.includes('arduino')) {
+                path = port.path
+                arduinoPort = new SerialPort(path, { baudRate: 9600 })
+                arduinoPort.on("open", () => {
+                    console.log('serial port open');
+                })
+                parser = arduinoPort.pipe(new Readline({ delimiter: '\n' }));
+                done = true
+                parserFlag = true;
+                parsing();
+            }
+        
+            if(count === allports && done === false){
+                console.log(`can't find any arduino`)
+            }
+        })
+        event.returnValue = parserFlag;
+    })
+})
 
-const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline');
-const port = new SerialPort('COM5', { baudRate: 9600 });
-const parser = port.pipe(new Readline({ delimiter: '\n' }));
 
-
-//Make port connection
-port.on("open", () => {
-    console.log('serial port open');
-});
-
-//communicate to arduino
-ipcMain.on("arduino", async(event, arg)=>{
-    console.log("main")
-    port.write('beans\n', (err) => {
+//communicate to arduino when prompted from GUI
+ipcMain.on("start tests", async(event, arg)=>{
+    arduinoPort.write('DC\n', (err) => {
         if (err) {
           return console.log('Error on write: ', err.message);
         }
-        console.log('message written');
+    });
+});
+ipcMain.on("noise test", async(event, arg)=>{
+    arduinoPort.write('noise\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("midband test", async(event, arg)=>{
+    arduinoPort.write('midband\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("guitar test", async(event, arg)=>{
+    arduinoPort.write('guitar\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("flat test", async(event, arg)=>{
+    arduinoPort.write('flat\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("bass test", async(event, arg)=>{
+    arduinoPort.write('bass\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("treble test", async(event, arg)=>{
+    arduinoPort.write('treble\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("pres test", async(event, arg)=>{
+    arduinoPort.write('pres\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("aux test", async(event, arg)=>{
+    arduinoPort.write('aux\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+    });
+});
+ipcMain.on("pow test", async(event, arg)=>{
+    arduinoPort.write('pow\n', (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
     });
 });
 
-//prints whatever arduino prints
-parser.on('data', data =>{
-    console.log('got word from arduino:', data);
-});
+function parsing (){
+    //prints whatever arduino prints
+    parser.on('data', data =>{
+        console.log('got word from arduino:', data);
+        
+        win.webContents.send(data.substr(0,data.indexOf(":")), data.substr(data.indexOf(":")+2).slice(0, -1));
+    });
+}
+

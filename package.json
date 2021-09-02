@@ -13,6 +13,7 @@
     "electron-rebuild": "^3.2.0"
   },
   "dependencies": {
+    "confetti-js": "0.0.18",
     "johnny-five": "^2.1.0"
   }
 }
