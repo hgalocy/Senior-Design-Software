@@ -63,6 +63,7 @@ let grayledColor = DCled.getAttribute("background-color");
 
 //start button
 document.getElementById("manufStartTestsBtn").addEventListener("click", function(){
+    clearConsole()
     canvas.style.visibility = "hidden";
     DCled.style.background = grayledColor;
     noiseled.style.background = grayledColor;
@@ -90,6 +91,7 @@ ipcRenderer.on("DC test", (event, arg) =>{
     else{
         DCled.style.background = "red";
     }
+    appendConsole("DC test" + ": " + arg)
 });
 ipcRenderer.on("noise test", (event, arg) =>{
     if (arg == "success"){
@@ -100,6 +102,7 @@ ipcRenderer.on("noise test", (event, arg) =>{
     else{
         noiseled.style.background = "red";
     }
+    appendConsole("noise test" + ": " + arg)
 });
 ipcRenderer.on("midband test", (event, arg) =>{
     if (arg == "success"){
@@ -110,6 +113,7 @@ ipcRenderer.on("midband test", (event, arg) =>{
     else{
         gainMidbandled.style.background = "red";
     }
+    appendConsole("midband test" + ": " + arg)
 });
 ipcRenderer.on("guitar test", (event, arg) =>{
     if (arg == "success"){
@@ -120,6 +124,7 @@ ipcRenderer.on("guitar test", (event, arg) =>{
     else{
         gainGuitarled.style.background = "red";
     }
+    appendConsole("guitar test" + ": " + arg)
 });
 ipcRenderer.on("flat test", (event, arg) =>{
     if (arg == "success"){
@@ -130,6 +135,7 @@ ipcRenderer.on("flat test", (event, arg) =>{
     else{
         freqFlatled.style.background = "red";
     }
+    appendConsole("flat test" + ": " + arg)
 });
 ipcRenderer.on("bass test", (event, arg) =>{
     if (arg == "success"){
@@ -140,6 +146,7 @@ ipcRenderer.on("bass test", (event, arg) =>{
     else{
         freqBassled.style.background = "red";
     }
+    appendConsole("bass test" + ": " + arg)
 });
 ipcRenderer.on("treble test", (event, arg) =>{
     if (arg == "success"){
@@ -150,6 +157,7 @@ ipcRenderer.on("treble test", (event, arg) =>{
     else{
         freqTrebleled.style.background = "red";
     }
+    appendConsole("treble test" + ": " + arg)
 });
 ipcRenderer.on("pres test", (event, arg) =>{
     if (arg == "success"){
@@ -160,6 +168,7 @@ ipcRenderer.on("pres test", (event, arg) =>{
     else{
         freqPresled.style.background = "red";
     }
+    appendConsole("pres test" + ": " + arg)
 });
 ipcRenderer.on("aux test", (event, arg) =>{
     if (arg == "success"){
@@ -170,6 +179,7 @@ ipcRenderer.on("aux test", (event, arg) =>{
     else{
         auxled.style.background = "red";
     }
+    appendConsole("aux test" + ": " + arg)
 });
 ipcRenderer.on("pow test", (event, arg) =>{
     if (arg == "success"){
@@ -179,4 +189,23 @@ ipcRenderer.on("pow test", (event, arg) =>{
     else{
         powled.style.background = "red";
     }
+    appendConsole("pow test" + ": " + arg)
 });
+
+//result console
+//clear console on start tests click
+const manufConsole = document.getElementById("manufConsole");
+function clearConsole(){
+    manufConsole.innerHTML = '';
+    var node = document.createElement('li');
+    node.appendChild(document.createTextNode("Console - Test Results:"));
+    manufConsole.appendChild(node);
+    console.log("console cleared");
+}
+//append to console when received from main.js
+function appendConsole(data){
+    var node = document.createElement('li');
+    node.appendChild(document.createTextNode(data));
+    manufConsole.appendChild(node);
+    console.log("added to console: " + data);
+}

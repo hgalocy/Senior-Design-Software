@@ -18,9 +18,9 @@ function createWindow() {
         }
     });
     win.removeMenu();
-    //win.setResizable(false);
+    win.setResizable(false);
     win.loadFile('html/manufacturing.html');
-    win.webContents.openDevTools(); //uncomment for debugging
+    //win.webContents.openDevTools(); //uncomment for debugging
     win.on('will-move', (e) => { //account for wierd windows resizing bug
         win.setSize(1040, 594);
     });
@@ -101,7 +101,7 @@ ipcMain.on("connect arduino", (event, arg) => {
                 console.log(`can't find any arduino`)
             }
         })
-        event.returnValue = parserFlag;
+        event.returnValue = parserFlag; //return whether the serial port is connected
     })
 })
 
