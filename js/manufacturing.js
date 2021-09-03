@@ -1,5 +1,10 @@
 const ipcRenderer = require("electron").ipcRenderer;
 const fs = require("fs");
+const json2csv = require('json2csv').parse;
+const newLine = '\r\n';
+
+let fields = ['Test', 'Outcome', 'Date'];
+let toCsv = [];
 
 //canvas dimensions for confetti
 var canvas = document.getElementById("manuf-content");
@@ -30,6 +35,16 @@ document.getElementById("manufExcelBtn").addEventListener("click", function(){
 document.getElementById("manufExcelPath").addEventListener("click", function(){
     chooseAFile(document.getElementById("manufExcelPath"));
 });
+
+//check if file exists
+let fileExistsSync = (file) => {
+    try {
+        fs.accessSync(file, fs.constants.R_OK | fs.constants.W_OK);
+        return true;
+      } catch (err) {
+        return false;
+      }
+}
 //choosing file function for opening dialog for file explorer via IPC communication with main
 let csvFile = "";
 function chooseAFile(pathDisplay){
@@ -40,7 +55,18 @@ function chooseAFile(pathDisplay){
             if(csvFile.slice(-4) != ".csv"){//check if already ends in .csv
                 csvFile = csvFile + ".csv";
             }
-            fs.closeSync(fs.openSync(csvFile,'w')); //create empty csv file at path specified
+            if (!fileExistsSync(csvFile)){
+                //new file
+                fs.closeSync(fs.openSync(csvFile,'w')); //create empty csv file at path specified
+                //write the headers and newline
+                console.log('New file, just writing headers');
+                fields = fields + newLine;
+            
+                fs.writeFile(csvFile, fields, function (err) {
+                    if (err) throw err;
+                    console.log('file saved');
+                });
+            }
             pathDisplay.value = csvFile; 
         }
     });
@@ -92,6 +118,9 @@ ipcRenderer.on("DC test", (event, arg) =>{
         DCled.style.background = "red";
     }
     appendConsole("DC test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["DC test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("noise test", (event, arg) =>{
     if (arg == "success"){
@@ -103,6 +132,9 @@ ipcRenderer.on("noise test", (event, arg) =>{
         noiseled.style.background = "red";
     }
     appendConsole("noise test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["noise test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("midband test", (event, arg) =>{
     if (arg == "success"){
@@ -114,6 +146,9 @@ ipcRenderer.on("midband test", (event, arg) =>{
         gainMidbandled.style.background = "red";
     }
     appendConsole("midband test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["midband test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("guitar test", (event, arg) =>{
     if (arg == "success"){
@@ -125,6 +160,9 @@ ipcRenderer.on("guitar test", (event, arg) =>{
         gainGuitarled.style.background = "red";
     }
     appendConsole("guitar test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["guitar test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("flat test", (event, arg) =>{
     if (arg == "success"){
@@ -136,6 +174,9 @@ ipcRenderer.on("flat test", (event, arg) =>{
         freqFlatled.style.background = "red";
     }
     appendConsole("flat test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["flat test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("bass test", (event, arg) =>{
     if (arg == "success"){
@@ -147,6 +188,9 @@ ipcRenderer.on("bass test", (event, arg) =>{
         freqBassled.style.background = "red";
     }
     appendConsole("bass test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["bass test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("treble test", (event, arg) =>{
     if (arg == "success"){
@@ -158,6 +202,9 @@ ipcRenderer.on("treble test", (event, arg) =>{
         freqTrebleled.style.background = "red";
     }
     appendConsole("treble test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["treble test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("pres test", (event, arg) =>{
     if (arg == "success"){
@@ -169,6 +216,9 @@ ipcRenderer.on("pres test", (event, arg) =>{
         freqPresled.style.background = "red";
     }
     appendConsole("pres test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["pres test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("aux test", (event, arg) =>{
     if (arg == "success"){
@@ -180,6 +230,9 @@ ipcRenderer.on("aux test", (event, arg) =>{
         auxled.style.background = "red";
     }
     appendConsole("aux test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["aux test", arg, date];
+    writeCSV();
 });
 ipcRenderer.on("pow test", (event, arg) =>{
     if (arg == "success"){
@@ -190,6 +243,9 @@ ipcRenderer.on("pow test", (event, arg) =>{
         powled.style.background = "red";
     }
     appendConsole("pow test" + ": " + arg)
+    let date = new Date();
+    toCsv = ["pow test", arg, date];
+    writeCSV();
 });
 
 //result console
@@ -208,4 +264,32 @@ function appendConsole(data){
     node.appendChild(document.createTextNode(data));
     manufConsole.appendChild(node);
     console.log("added to console: " + data);
+}
+
+//write to CSV
+if(document.getElementById("manufExcelPath").value != ""){ //a csv is actually specified
+    const ws = fs.createWriteStream(pathDisplay.value);
+    fastcsv.write(data, { headers: true }).pipe(ws);
+}
+
+
+function writeCSV(){
+    if(document.getElementById("manufExcelPath").value != ""){ //a csv is actually specified
+        fs.stat(document.getElementById("manufExcelPath").value, function (err, stat) {
+            if (err == null) {
+                console.log('File exists');
+            
+                //write the actual data and end with newline
+                //var csv = json2csv(toCsv) + newLine;
+                toCsv = toCsv + newLine;
+                fs.appendFile(document.getElementById("manufExcelPath").value, toCsv, function (err) {
+                    if (err) throw err;
+                    console.log('The "data to append" was appended to file!');
+                });
+            } 
+            else {
+                console.log("something went wrong writing to file");
+            }
+        });
+    }
 }
