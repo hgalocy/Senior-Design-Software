@@ -1,6 +1,5 @@
 const ipcRenderer = require("electron").ipcRenderer;
 const fs = require("fs");
-const json2csv = require('json2csv').parse;
 const newLine = '\r\n';
 
 let fields = ['Test', 'Outcome', 'Date'];
@@ -280,7 +279,6 @@ function writeCSV(){
                 console.log('File exists');
             
                 //write the actual data and end with newline
-                //var csv = json2csv(toCsv) + newLine;
                 toCsv = toCsv + newLine;
                 fs.appendFile(document.getElementById("manufExcelPath").value, toCsv, function (err) {
                     if (err) throw err;
