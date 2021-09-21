@@ -1,6 +1,14 @@
 const { ipcRenderer } = require("electron");
 const fs = require("fs");
 
+//check if arduino connected on page load
+window.onload = function checkIfConnected(){
+    if(ipcRenderer.sendSync("already connected", "") == true){
+        connectionBtn.innerHTML = "Connection:<br>\Connected :)"
+    }
+}
+
+
 //make arduino connection
 const connectionBtn = document.getElementById("connectionBtn");
 connectionBtn.addEventListener("click", function(){
