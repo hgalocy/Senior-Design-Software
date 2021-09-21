@@ -1,5 +1,3 @@
-const ipcRenderer = require("electron").ipcRenderer;
-const fs = require("fs");
 const newLine = '\r\n';
 
 let fields = ['Test', 'Outcome', 'Date'];
@@ -11,22 +9,6 @@ let confettiSettings = { target: "manuf-content" };
 let confetti = new ConfettiGenerator(confettiSettings);
 confetti.render();
 
-//make arduino connection
-const connectionBtn = document.getElementById("connectionBtn");
-connectionBtn.addEventListener("click", function(){
-    if(ipcRenderer.sendSync("connect arduino", "") == true){
-            connectionBtn.innerHTML = "Connection:<br>\Connected :)"
-    }
-});
-
-//open about popup
-const aboutBtn = document.getElementById("aboutBtn");
-aboutBtn.addEventListener("click", function(){
-    var arg = "aboutWindow";
-    //send message to main process to open about window
-    ipcRenderer.send("openWindow", arg);
-});
-
 //document interaction for choosing file
 document.getElementById("manufExcelBtn").addEventListener("click", function(){
     chooseAFile(document.getElementById("manufExcelPath"));
@@ -35,7 +17,7 @@ document.getElementById("manufExcelPath").addEventListener("click", function(){
     chooseAFile(document.getElementById("manufExcelPath"));
 });
 
-//check if file exists
+//function to check if file exists
 let fileExistsSync = (file) => {
     try {
         fs.accessSync(file, fs.constants.R_OK | fs.constants.W_OK);
@@ -44,6 +26,7 @@ let fileExistsSync = (file) => {
         return false;
       }
 }
+
 //choosing file function for opening dialog for file explorer via IPC communication with main
 let csvFile = "";
 function chooseAFile(pathDisplay){

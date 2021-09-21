@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/styleAll.css">
     <link rel="stylesheet" href="../css/diagnostic.css">
+    <script defer src="../js/common.js"></script>
     <script defer src="../js/diagnostic.js"></script>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
@@ -11,24 +12,21 @@
   </head>
   <body>
     <div class="menu-bar">
-        <div class="connection">
-          <h3>Connection:</h3>
-          <h3 id="connectionIndicator">Not Connected :(</h3>
+      <button id="connectionBtn" type="button" class="connection">Connection:<br>Not Connected :(</button>
+      <h3 class="menu-tests">Tests:</h3>
+      <div class="nav">
+        <ul class="nav-1">
+          <li><img src="../images/manufacturing.png" alt="" class="manufacturing-image"></li>
+          <li><img src="../images/diagnostic.png" alt="" class="diagnostic-image"></li>
+          <li><img src="../images/frequency.png" alt="" class="frequency-image"></li>
+        </ul>
+        <div class="nav-2">
+          <a href="manufacturing.html" class="manufacturing-option">Manufacturing</a>
+          <a href="diagnostic.html" class="diagnostic-option">Diagnostic</a>
+          <a href="frequency.html" class="frequency-option">Frequency<br>Response</a>
         </div>
-        <h3 class="menu-tests">Tests:</h3>
-        <div class="nav">
-          <ul class="nav-1">
-            <li><img src="../images/manufacturing.png" alt="" class="manufacturing-image"></li>
-            <li><img src="../images/diagnostic.png" alt="" class="diagnostic-image"></li>
-            <li><img src="../images/frequency.png" alt="" class="frequency-image"></li>
-          </ul>
-          <div class="nav-2">
-            <a href="manufacturing.html" class="manufacturing-option">Manufacturing</a>
-            <a href="diagnostic.html" class="diagnostic-option">Diagnostic</a>
-            <a href="frequency.html" class="frequency-option">Frequency<br>Response</a>
-          </div>
-        </div>
-        <button id="aboutBtn" type="button" class="about">About</button>
+      </div>
+      <button id="aboutBtn" type="button" class="about">About</button>
     </div>
     <div class="content">
       <h1>Diagnostic (Manual) Testing</h1>
@@ -37,40 +35,40 @@
           <!--drop downs-->
           <table class="pots-and-presence">
               <tr>
-                <th>Pot 1:</th>
+                <th>Drive:</th>
                 <th>
                   <div class="dropdown">
-                    <button id="pot1DropBtn" class="dropbtn">Mode Selection...</button>
-                    <ul id="pot1DropDown" class="dropdown-content">
-                      <li id="pot1CCW" class="pot1-drop-option">Counter-Clockwise</li>
-                      <li id="pot1CW" class="pot1-drop-option">Clockwise</li>
-                      <li id="pot1Mid" class="pot1-drop-option">Middle</li>
+                    <button id="driveDropBtn" class="dropbtn">Mode Selection...</button>
+                    <ul id="driveDropDown" class="dropdown-content">
+                      <li id="driveCCW" class="drive-drop-option">Counter-Clockwise</li>
+                      <li id="driveCW" class="drive-drop-option">Clockwise</li>
+                      <li id="driveMid" class="drive-drop-option">Middle</li>
                     </ul>
                   </div>
                 </th>
               </tr>
               <tr>
-                <th>Pot 2:</th>
+                <th>Tone:</th>
                   <th>
                     <div class="dropdown">
-                      <button id="pot2DropBtn" class="dropbtn">Mode Selection...</button>
-                      <ul id="pot2DropDown" class="dropdown-content">
-                        <li id="pot2CCW" class="pot2-drop-option">Counter-Clockwise</li>
-                        <li id="pot2CW" class="pot2-drop-option">Clockwise</li>
-                        <li id="pot2Mid" class="pot2-drop-option">Middle</li>
+                      <button id="toneDropBtn" class="dropbtn">Mode Selection...</button>
+                      <ul id="toneDropDown" class="dropdown-content">
+                        <li id="toneCCW" class="tone-drop-option">Counter-Clockwise</li>
+                        <li id="toneCW" class="tone-drop-option">Clockwise</li>
+                        <li id="toneMid" class="tone-drop-option">Middle</li>
                       </ul>
                     </div>
                   </th>
               </tr>
               <tr>
-                <th>Pot 3:</th>
+                <th>Vol:</th>
                   <th>
                     <div class="dropdown">
-                      <button id="pot3DropBtn" class="dropbtn">Mode Selection...</button>
-                      <ul id="pot3DropDown" class="dropdown-content">
-                        <li id="pot3CCW" class="pot3-drop-option">Counter-Clockwise</li>
-                        <li id="pot3CW" class="pot3-drop-option">Clockwise</li>
-                        <li id="pot3Mid" class="pot3-drop-option">Middle</li>
+                      <button id="volDropBtn" class="dropbtn">Mode Selection...</button>
+                      <ul id="volDropDown" class="dropdown-content">
+                        <li id="volCCW" class="vol-drop-option">Counter-Clockwise</li>
+                        <li id="volCW" class="vol-drop-option">Clockwise</li>
+                        <li id="volMid" class="vol-drop-option">Middle</li>
                       </ul>
                     </div>
                   </th>
