@@ -71,20 +71,25 @@ let grayledColor = DCled.getAttribute("background-color");
 
 //start button
 document.getElementById("manufStartTestsBtn").addEventListener("click", function(){
-    clearConsole()
-    canvas.style.visibility = "hidden";
-    DCled.style.background = grayledColor;
-    noiseled.style.background = grayledColor;
-    gainMidbandled.style.background = grayledColor;
-    gainGuitarled.style.background = grayledColor;
-    freqFlatled.style.background = grayledColor;
-    freqBassled.style.background = grayledColor;
-    freqTrebleled.style.background = grayledColor;
-    freqPresled.style.background = grayledColor;
-    auxled.style.background = grayledColor;
-    powled.style.background = grayledColor;
-    ipcRenderer.send("start tests", ""); //send message to main.js to start tests
-    DCled.style.background = "yellow";
+    if (connectionBtn.innerHTML == "Connection:<br>\Connected :)"){ //check if arduino connected before starting tests
+        clearConsole()
+        canvas.style.visibility = "hidden";
+        DCled.style.background = grayledColor;
+        noiseled.style.background = grayledColor;
+        gainMidbandled.style.background = grayledColor;
+        gainGuitarled.style.background = grayledColor;
+        freqFlatled.style.background = grayledColor;
+        freqBassled.style.background = grayledColor;
+        freqTrebleled.style.background = grayledColor;
+        freqPresled.style.background = grayledColor;
+        auxled.style.background = grayledColor;
+        powled.style.background = grayledColor;
+        ipcRenderer.send("start tests", ""); //send message to main.js to start tests
+        DCled.style.background = "yellow";
+    }
+    else{
+        document.getElementById("errorMessage").style.visibility = "visible";
+    }
 })
 
 

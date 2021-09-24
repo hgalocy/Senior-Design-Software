@@ -4,7 +4,8 @@ const fs = require("fs");
 //check if arduino connected on page load
 window.onload = function checkIfConnected(){
     if(ipcRenderer.sendSync("already connected", "") == true){
-        connectionBtn.innerHTML = "Connection:<br>\Connected :)"
+        connectionBtn.innerHTML = "Connection:<br>\Connected :)";
+        document.getElementsByClassName("green-button")[0].style.backgroundColor = "var(--green)";
     }
 }
 
@@ -13,7 +14,11 @@ window.onload = function checkIfConnected(){
 const connectionBtn = document.getElementById("connectionBtn");
 connectionBtn.addEventListener("click", function(){
     if(ipcRenderer.sendSync("connect arduino", "") == true){
-            connectionBtn.innerHTML = "Connection:<br>\Connected :)"
+            connectionBtn.innerHTML = "Connection:<br>\Connected :)";
+            document.getElementsByClassName("green-button")[0].style.backgroundColor = "var(--green)";
+            if(document.getElementById("errorMessage").style.visibility == "visible"){
+                document.getElementById("errorMessage").style.visibility = "hidden";
+            }
     }
 });
 
