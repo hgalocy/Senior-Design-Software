@@ -40,6 +40,7 @@ li{
 }
 button{
     cursor: pointer;
+    outline: none;
 }
 canvas{
     position: fixed; 
@@ -151,7 +152,7 @@ h1{
     cursor: pointer;
 }
 .green-button{
-    background-color: var(--green);
+    background-color: var(--text-area);
     border: none;
     padding: 15px 25px;
     font-size: 25px;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/styleAll.css">
     <link rel="stylesheet" href="../css/manufacturing.css">
+    <script defer src="../js/common.js"></script>
     <script src="../node_modules/confetti-js/dist/index.min.js"></script>
     <script defer src="../js/manufacturing.js"></script>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
@@ -30,7 +31,10 @@
         <button id="aboutBtn" type="button" class="about">About</button>
     </div>
     <div class="content">
-      <h1>Manufacturing Testing</h1>
+      <div class="flex-row">
+        <h1>Manufacturing Testing</h1>
+        <h3 id="errorMessage">Arduino not connected!</h3>
+      </div>
       <div class="manuf-body-1">
         <!--specify excel file-->
         <div class="input">

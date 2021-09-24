@@ -74,35 +74,48 @@ ipcMain.on("chooseFile", async (event, arg)=>{
 })
 
 
+let connected = false;
+//check if arduino already connected on page load
+ipcMain.on("already connected", (event, arg) => {
+    event.returnValue = connected;
+});
 
+//button clicked to connect arduino->message sent here from manufacturing page via ipc
 ipcMain.on("connect arduino", (event, arg) => {
-    // Promise approach
-    SerialPort.list().then(ports => {
-        let done = false
-        let count = 0
-        let allports = ports.length
-        ports.forEach(function(port) {
-            count = count+1
-            pm  = port.manufacturer
-        
-            if (typeof pm !== 'undefined' && pm.includes('arduino')) {
-                path = port.path
-                arduinoPort = new SerialPort(path, { baudRate: 9600 })
-                arduinoPort.on("open", () => {
-                    console.log('serial port open');
-                })
-                parser = arduinoPort.pipe(new Readline({ delimiter: '\n' }));
-                done = true
-                parserFlag = true;
-                parsing();
-            }
-        
-            if(count === allports && done === false){
-                console.log(`can't find any arduino`)
-            }
+    if (!connected){
+        // Promise approach
+        SerialPort.list().then(ports => {
+            let done = false
+            let count = 0
+            let allports = ports.length
+            ports.forEach(function(port) {
+                count = count+1
+                pm  = port.manufacturer
+            
+                if (typeof pm !== 'undefined' && pm.includes('arduino')) {
+                    path = port.path
+                    arduinoPort = new SerialPort(path, { baudRate: 9600 })
+                    arduinoPort.on("open", () => {
+                        console.log('serial port open');
+                    })
+                    parser = arduinoPort.pipe(new Readline({ delimiter: '\n' }));
+                    done = true
+                    parserFlag = true;
+                    parsing();
+                }
+            
+                if(count === allports && done === false){
+                    console.log(`can't find any arduino`)
+                }
+            })
+            connected = parserFlag;
+            event.returnValue = connected; //return whether the serial port is connected
         })
-        event.returnValue = parserFlag; //return whether the serial port is connected
-    })
+        
+    }
+    else{
+        event.returnValue = connected; //return whether the serial port is connected
+    }
 })
 
 
