@@ -62,15 +62,15 @@ function presTest (){
     presSetting("on");
     testCommand("AC", 800);
 }
-function auxTest (){ //wtf
+function auxTest (){
     potSetting("drive", "ccw");
     potSetting("tone", "ccw");
     potSetting("vol", "ccw");
     presSetting("off");
     inputSetting("aux", .02);
-    testCommand("AC", 800);
-    presSetting("on");
-    testCommand("AC", 800);
+    testCommand("AC", 25);
+    testCommand("AC", 3000);
+    testCommand("AC", 8000);
 }
 function powTest (){ 
     potSetting("drive", "mid");
