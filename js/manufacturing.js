@@ -84,7 +84,8 @@ document.getElementById("manufStartTestsBtn").addEventListener("click", function
         freqPresled.style.background = grayledColor;
         auxled.style.background = grayledColor;
         powled.style.background = grayledColor;
-        ipcRenderer.send("start tests", ""); //send message to main.js to start tests
+        DCTest ();
+        //ipcRenderer.send("start tests", ""); //send message to main.js to start tests
         DCled.style.background = "yellow";
     }
     else{
@@ -252,6 +253,12 @@ function appendConsole(data){
     manufConsole.appendChild(node);
     console.log("added to console: " + data);
 }
+
+
+
+
+
+
 
 //write to CSV
 if(document.getElementById("manufExcelPath").value != ""){ //a csv is actually specified
