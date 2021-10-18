@@ -55,6 +55,8 @@ ipcMain.on("openWindow", function(event, arg){
     childWin.loadFile("html/about.html");
     childWin.removeMenu();
     childWin.setResizable(false);
+    childWin.webContents.openDevTools(); //uncomment for debugging
+
     childWin.once("ready-to-show", () => {
         childWin.show();
     })
@@ -101,11 +103,11 @@ ipcMain.on("connect arduino", (event, arg) => {
                     parser = arduinoPort.pipe(new Readline({ delimiter: '\n' }));
                     done = true
                     parserFlag = true;
-                    parsing();
+                    //parsing();
                 }
             
                 if(count === allports && done === false){
-                    console.log(`can't find any arduino`)
+                    console.log("can't find any arduino")
                 }
             })
             connected = parserFlag;
@@ -120,83 +122,65 @@ ipcMain.on("connect arduino", (event, arg) => {
 
 
 //communicate to arduino when prompted from GUI
-ipcMain.on("start tests", async(event, arg)=>{
-    arduinoPort.write('DC\n', (err) => {
+ipcMain.on("arduino command", async(event, arg)=>{
+    //send to arduino
+    arduinoPort.write(arg, (err) => {
         if (err) {
           return console.log('Error on write: ', err.message);
         }
     });
-});
-ipcMain.on("noise test", async(event, arg)=>{
-    arduinoPort.write('noise\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("midband test", async(event, arg)=>{
-    arduinoPort.write('midband\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("guitar test", async(event, arg)=>{
-    arduinoPort.write('guitar\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("flat test", async(event, arg)=>{
-    arduinoPort.write('flat\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("bass test", async(event, arg)=>{
-    arduinoPort.write('bass\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("treble test", async(event, arg)=>{
-    arduinoPort.write('treble\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("pres test", async(event, arg)=>{
-    arduinoPort.write('pres\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("aux test", async(event, arg)=>{
-    arduinoPort.write('aux\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
-    });
-});
-ipcMain.on("pow test", async(event, arg)=>{
-    arduinoPort.write('pow\n', (err) => {
-        if (err) {
-          return console.log('Error on write: ', err.message);
-        }
+    //send received data back to renderer process once received from arduino
+    parser.on('data', data =>{
+        //console.log('got word from arduino:', data);
+        let receivedJSON = JSON.parse(data);
+        //console.log ("received action: " + receivedJSON["Action"]);
+        win.webContents.send('received data', data); //send to renderer process to print to console/csv
+        event.returnValue = (data); //send response to original command (interface.js for manufacturing page)
     });
 });
 
-function parsing (){
+//start the individual tests for manufacturing page
+ipcMain.on("reset manufacturing page", (event, arg)=>{
+    win.webContents.send("reset manufacturing page", arg)
+});
+ipcMain.on("start DC", (event, arg)=>{
+    win.webContents.send("DC test", arg)
+});
+ipcMain.on("start noise", async(event, arg)=>{
+    win.webContents.send("noise test", arg)
+});
+ipcMain.on("start gain", async(event, arg)=>{
+    win.webContents.send("gain test", arg)
+});
+ipcMain.on("start flat", async(event, arg)=>{
+    win.webContents.send("flat test", arg)
+});
+ipcMain.on("start bass", async(event, arg)=>{
+    win.webContents.send("bass test", arg)
+});
+ipcMain.on("start treble", async(event, arg)=>{
+    win.webContents.send("treble test", arg)
+});
+ipcMain.on("start pres", async(event, arg)=>{
+    win.webContents.send("pres test", arg)
+});
+ipcMain.on("start aux", async(event, arg)=>{
+    win.webContents.send("aux test", arg)
+});
+ipcMain.on("start pow", async(event, arg)=>{
+    win.webContents.send("pow test", arg)
+});
+
+
+/*function parsing () {
     //prints whatever arduino prints
     parser.on('data', data =>{
         console.log('got word from arduino:', data);
-        
-        win.webContents.send(data.substr(0,data.indexOf(":")), data.substr(data.indexOf(":")+2).slice(0, -1));
+        let receivedJSON = JSON.parse(data);
+        console.log ("received action: " + receivedJSON["Action"]);
+        return data;
+        //console.log(data.substr(2,data.indexOf(":")-3))
+        //win.webContents.send(data)
     });
-}
+}*/
 

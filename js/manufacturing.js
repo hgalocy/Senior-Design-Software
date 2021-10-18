@@ -1,6 +1,6 @@
 const newLine = '\r\n';
 
-let fields = ['Test', 'Outcome', 'Date'];
+let fields = ['Date', 'Test', 'Command', 'Executed', 'Result'];
 let toCsv = [];
 
 //canvas dimensions for confetti
@@ -13,9 +13,7 @@ confetti.render();
 document.getElementById("manufExcelBtn").addEventListener("click", function(){
     chooseAFile(document.getElementById("manufExcelPath"));
 });
-document.getElementById("manufExcelPath").addEventListener("click", function(){
-    chooseAFile(document.getElementById("manufExcelPath"));
-});
+
 
 //function to check if file exists
 let fileExistsSync = (file) => {
@@ -37,18 +35,26 @@ function chooseAFile(pathDisplay){
             if(csvFile.slice(-4) != ".csv"){//check if already ends in .csv
                 csvFile = csvFile + ".csv";
             }
+            fields = fields + newLine;
             if (!fileExistsSync(csvFile)){
                 //new file
                 fs.closeSync(fs.openSync(csvFile,'w')); //create empty csv file at path specified
                 //write the headers and newline
                 console.log('New file, just writing headers');
-                fields = fields + newLine;
-            
+                
+            /*
                 fs.writeFile(csvFile, fields, function (err) {
                     if (err) throw err;
                     console.log('file saved');
-                });
+                });*/
             }
+            
+                //existing file , write append headers
+                fs.appendFile(csvFile, fields, function (err) {
+                    if (err) throw err;
+                    console.log('The "data to append" was appended to file!');
+                });
+            
             pathDisplay.value = csvFile; 
         }
     });
@@ -57,8 +63,7 @@ function chooseAFile(pathDisplay){
 //led elements
 let DCled = document.getElementById("DCled");
 let noiseled = document.getElementById("noiseled");
-let gainMidbandled = document.getElementById("gainMidbandled");
-let gainGuitarled = document.getElementById("gainGuitarled");
+let gainMidbandled = document.getElementById("gainled");
 let freqFlatled = document.getElementById("freqFlatled");
 let freqBassled = document.getElementById("freqBassled");
 let freqTrebleled = document.getElementById("freqTrebleled");
@@ -68,32 +73,165 @@ let powled = document.getElementById("powled");
 let grayledColor = DCled.getAttribute("background-color");
 
 
+let commandFailFlag = 1; //0 if a command fails
+//0 if unexecuted, 1 if pass, 2 if fail
+let DCTestPassFlag = 0;
+let noiseTestPassFlag = 0;
+let gainTestPassFlag = 0;
+let flatTestPassFlag = 0;
+let bassTestPassFlag = 0;
+let trebleTestPassFlag = 0;
+let presTestPassFlag = 0;
+let auxTestPassFlag = 0;
+let powTestPassFlag = 0;
 
 //start button
-document.getElementById("manufStartTestsBtn").addEventListener("click", function(){
+document.getElementById("manufStartTestsBtn").addEventListener("click", async function(){
     if (connectionBtn.innerHTML == "Connection:<br>\Connected :)"){ //check if arduino connected before starting tests
-        clearConsole()
-        canvas.style.visibility = "hidden";
-        DCled.style.background = grayledColor;
-        noiseled.style.background = grayledColor;
-        gainMidbandled.style.background = grayledColor;
-        gainGuitarled.style.background = grayledColor;
-        freqFlatled.style.background = grayledColor;
-        freqBassled.style.background = grayledColor;
-        freqTrebleled.style.background = grayledColor;
-        freqPresled.style.background = grayledColor;
-        auxled.style.background = grayledColor;
-        powled.style.background = grayledColor;
-        DCTest ();
-        //ipcRenderer.send("start tests", ""); //send message to main.js to start tests
-        DCled.style.background = "yellow";
+        //go through each test sequentially
+        await ipcRenderer.send("reset manufacturing page", "");
+        ipcRenderer.send("start DC", "");
     }
     else{
         document.getElementById("errorMessage").style.visibility = "visible";
     }
 })
+ipcRenderer.on("reset manufacturing page", (event, arg) =>{
+    clearConsole()
+    canvas.style.visibility = "hidden";
+    noiseled.style.background = grayledColor;
+    gainled.style.background = grayledColor;
+    freqFlatled.style.background = grayledColor;
+    freqBassled.style.background = grayledColor;
+    freqTrebleled.style.background = grayledColor;
+    freqPresled.style.background = grayledColor;
+    auxled.style.background = grayledColor;
+    powled.style.background = grayledColor;
+    DCled.style.background = "yellow";
+    console.log("reset")
+    return;
+});
+
+let date;
+ipcRenderer.on("DC test", async (event, arg) =>{
+    DCTest();
+    if (commandFailFlag && DCTestPassFlag){//only execute the next test if the prior one passed
+        writeConsoleAndCSV("DC test", "passed") //update csv and console
+        DCled.style.background = "green";
+        noiseled.style.background = "yellow";
+        ipcRenderer.send("start noise", "");
+    }
+    else{
+        writeConsoleAndCSV("DC test", "failed") //update csv and console
+        DCled.style.background = "red";
+    }
+})
+ipcRenderer.on("noise test", (event, arg) =>{
+    noiseTest();
+    if (commandFailFlag && noiseTestPassFlag){//only execute the next test if the prior one passed
+        writeConsoleAndCSV("Noise test", "passed") //update csv and console
+        noiseled.style.background = "green";
+        gainled.style.background = "yellow";
+        ipcRenderer.send("start gain","");
+    }
+    else{
+        writeConsoleAndCSV("Noise test", "failed")
+        noiseled.style.background = "red";
+    }
+});
+ipcRenderer.on("gain test", (event, arg) =>{
+    gainTest();
+    if (commandFailFlag && gainTestPassFlag){
+        writeConsoleAndCSV("Gain test", "passed") //update csv and console
+        gainled.style.background = "green";
+        freqFlatled.style.background = "yellow";
+        ipcRenderer.send("start flat", "");
+    }
+    else{
+        writeConsoleAndCSV("Gain test", "failed")
+        gainled.style.background = "red";
+    }
+});
+ipcRenderer.on("flat test", (event, arg) =>{
+    flatTest();
+    if (commandFailFlag && flatTestPassFlag){
+        writeConsoleAndCSV("Flat test", "passed") //update csv and console
+        freqFlatled.style.background = "green";
+        freqBassled.style.background = "yellow";
+        ipcRenderer.send("start bass", "");
+    }
+    else{
+        writeConsoleAndCSV("Flat test", "failed")
+        freqFlatled.style.background = "red";
+    }
+});
+ipcRenderer.on("bass test", (event, arg) =>{
+    bassTest();
+    if (commandFailFlag && bassTestPassFlag){
+        writeConsoleAndCSV("Bass test", "passed") //update csv and console
+        freqBassled.style.background = "green";
+        freqTrebleled.style.background = "yellow";
+        ipcRenderer.send("start treble", "");
+    }
+    else{
+        writeConsoleAndCSV("Bass test", "failed")
+        freqBassled.style.background = "red";
+    }
+});
+ipcRenderer.on("treble test", (event, arg) =>{
+    trebleTest();
+    if (commandFailFlag && trebleTestPassFlag){
+        writeConsoleAndCSV("Treble test", "passed") //update csv and console
+        freqTrebleled.style.background = "green";
+        freqPresled.style.background = "yellow";
+        ipcRenderer.send("start pres", "");
+    }
+    else{
+        writeConsoleAndCSV("Treble test", "passed")
+        freqTrebleled.style.background = "green";
+    }
+});
+ipcRenderer.on("pres test", (event, arg) =>{
+    presTest();
+    if (commandFailFlag && presTestPassFlag){
+        writeConsoleAndCSV("Pres test", "passed") //update csv and console
+        freqPresled.style.background = "green";
+        auxled.style.background = "yellow";
+        ipcRenderer.send("start aux", "");
+    }
+    else{
+        writeConsoleAndCSV("Pres test", "failed")
+        freqPresled.style.background = "red";
+    }
+});
+ipcRenderer.on("aux test", (event, arg) =>{
+    auxTest();
+    if (commandFailFlag && auxTestPassFlag){
+        writeConsoleAndCSV("Aux test", "passed") //update csv and console
+        auxled.style.background = "green";
+        powled.style.background = "yellow";
+        ipcRenderer.send("start pow", "");
+    }
+    else{
+        writeConsoleAndCSV("Aux test", "failed")
+        auxled.style.background = "red";
+    }
+});
+ipcRenderer.on("pow test", (event, arg) =>{
+    powTest();
+    if (commandFailFlag && powTestPassFlag){
+        writeConsoleAndCSV("Pow test", "passed") //update csv and console
+        powled.style.background = "green";
+        canvas.style.visibility='visible';
+    }
+    else{
+        writeConsoleAndCSV("Pow test", "failed")
+        powled.style.background = "red";
+    }
+});
 
 
+/*
 //received 
 ipcRenderer.on("DC test", (event, arg) =>{
     console.log(arg.length)
@@ -235,6 +373,7 @@ ipcRenderer.on("pow test", (event, arg) =>{
     toCsv = ["pow test", arg, date];
     writeCSV();
 });
+*/
 
 //result console
 //clear console on start tests click
@@ -285,4 +424,11 @@ function writeCSV(){
             }
         });
     }
+}
+
+function writeConsoleAndCSV(test, passed){
+    appendConsole(test + ": " + passed)
+    date = new Date();
+    toCsv = [date, test, "", "", passed];
+    writeCSV();
 }

@@ -1,124 +1,161 @@
+const { ipcRenderer } = require('electron')
+
 function DCTest (){
-    potSetting("drive", "cw");
-    potSetting("tone", "mid");
-    potSetting("vol", "cw");
-    presSetting("off");
-    sigOff("guitar");
-    sigOff("aux"); 
-    testCommand("DC");
+    potSetting("Drive", "CW");
+    potSetting("Tone", "MID");
+    potSetting("Volume", "CW");
+    presSetting("Off");
+    sigOff();
+    testCommand("MeasDC");
+    DCTestPassFlag = 1;
+    console.log("DC Test finished with result: " + DCTestPassFlag);
+
 }
 function noiseTest (){
-    potSetting("drive", "cw");
-    potSetting("tone", "cw");
-    potSetting("vol", "cw");
-    presSetting("off");
-    sigOff("guitar");
-    sigOff("aux");
-    testCommand("noise");
+    potSetting("Drive", "CW");
+    potSetting("Tone", "CW");
+    potSetting("Volume", "CW");
+    presSetting("Off");
+    sigOff();
+    testCommand("MeasAC");
+    noiseTestPassFlag = 1;
+    console.log("Noise Test finished with result: " + noiseTestPassFlag);
 }
 function gainTest (){
-    potSetting("drive", "cw");
-    potSetting("tone", "mid");
-    potSetting("vol", "cw");
-    presSetting("off");
-    sigOff("aux");
-    sigOn("guitar", .001, 1000); 
-    testCommand("AC");
+    potSetting("Drive", "CW");
+    potSetting("Tone", "MID");
+    potSetting("Volume", "CW");
+    presSetting("Off");
+    sigOff();
+    sigOn("Guitar", .001, 1000); 
+    testCommand("MeasAC");
+    gainTestPassFlag = 1;
+    console.log("Gain Test finished with result: " + gainTestPassFlag);
 }
 function flatTest (){
-    potSetting("drive", "mid");
-    potSetting("tone", "mid");
-    potSetting("vol", "mid");
-    presSetting("off");
-    sigOff("aux");
-    sigOn("guitar", .02, 60); 
-    testCommand("AC");
-    sigOn("guitar", .02, 1000); 
-    testCommand("AC");
-    sigOn("guitar", .02, 7000); 
-    testCommand("AC");
+    potSetting("Drive", "MID");
+    potSetting("Tone", "MID");
+    potSetting("Volume", "MID");
+    presSetting("Off");
+    sigOff();
+    sigOn("Guitar", .02, 60); 
+    testCommand("MeasAC");
+    sigOn("Guitar", .02, 1000); 
+    testCommand("MeasAC");
+    sigOn("Guitar", .02, 7000); 
+    testCommand("MeasAC");
+    flatTestPassFlag = 1;
+    console.log("Flat Test finished with result: " + flatTestPassFlag);
 }
 function bassTest (){
-    potSetting("drive", "mid");
-    potSetting("tone", "ccw");
-    potSetting("vol", "mid");
-    presSetting("off");
-    sigOff("aux");
-    sigOn("guitar", .02, 60);
-    testCommand("AC");
-    sigOn("guitar", .02, 1000);
-    testCommand("AC");
-    sigOn("guitar", .02, 7000);
-    testCommand("AC");
+    potSetting("Drive", "MID");
+    potSetting("Tone", "CCW");
+    potSetting("Volume", "MID");
+    presSetting("Off");
+    sigOff();
+    sigOn("Guitar", .02, 60);
+    testCommand("MeasAC");
+    sigOn("Guitar", .02, 1000);
+    testCommand("MeasAC");
+    sigOn("Guitar", .02, 7000);
+    testCommand("MeasAC");
+    bassTestPassFlag = 1;
+    console.log("Bass Test finished with result: " + bassTestPassFlag);
 }
 function trebleTest (){
-    potSetting("drive", "mid");
-    potSetting("tone", "cw");
-    potSetting("vol", "mid");
-    presSetting("off");
-    sigOff("aux");
-    sigOn("guitar", .02, 60);
-    testCommand("AC");
-    sigOn("guitar", .02, 1000);
-    testCommand("AC");
-    sigOn("guitar", .02, 7000);
-    testCommand("AC");
+    potSetting("Drive", "MID");
+    potSetting("Tone", "CW");
+    potSetting("Volume", "MID");
+    presSetting("Off");
+    sigOff();
+    sigOn("Guitar", .02, 60);
+    testCommand("MeasAC");
+    sigOn("Guitar", .02, 1000);
+    testCommand("MeasAC");
+    sigOn("Guitar", .02, 7000);
+    testCommand("MeasAC");
+    trebleTestPassFlag = 1;
+    console.log("Treble Test finished with result: " + trebleTestPassFlag);
 }
 function presTest (){
-    potSetting("drive", "mid");
-    potSetting("tone", "mid");
-    potSetting("vol", "mid");
-    presSetting("off");
-    sigOff("aux");
-    sigOn("guitar", .02, 800);
-    testCommand("AC");
-    presSetting("on");
-    sigOn("guitar", .02, 800)
-    testCommand("AC");
+    potSetting("Drive", "MID");
+    potSetting("tone", "MID");
+    potSetting("vol", "MID");
+    presSetting("Off");
+    sigOff();
+    sigOn("Guitar", .02, 800);
+    testCommand("MeasAC");
+    presSetting("On");
+    sigOn("Guitar", .02, 800)
+    testCommand("MeasAC");
+    presTestPassFlag = 1;
+    console.log("Pres Test finished with result: " + presTestPassFlag);
 }
 function auxTest (){
-    potSetting("drive", "ccw");
-    potSetting("tone", "ccw");
-    potSetting("vol", "ccw");
-    presSetting("off");
-    sigOff("guitar");
-    sigOn("aux", .02, 25);
-    testCommand("AC");
-    sigOn("aux", .02, 3000);
-    testCommand("AC");
-    sigOn("aux", .02, 8000);
+    potSetting("Drive", "CCW");
+    potSetting("Tone", "CCW");
+    potSetting("Volume", "CCW");
+    presSetting("Off");
+    sigOff();
+    sigOn("Aux", .02, 25);
+    testCommand("MeasAC");
+    sigOn("Aux", .02, 3000);
+    testCommand("MeasAC");
+    sigOn("Aux", .02, 8000);
+    testCommand("MeasAC");
+    auxTestPassFlag = 1;
+    console.log("Aux Test finished with result: " + auxTestPassFlag);
 }
 function powTest (){ 
-    potSetting("drive", "mid");
-    potSetting("tone", "mid");
-    potSetting("vol", "mid");
-    presSetting("off");
+    potSetting("Drive", "MID");
+    potSetting("Tone", "MID");
+    potSetting("Volume", "MID");
+    presSetting("Off");
+    sigOff();
     //arduino will handle different signal levels/freqs
-    testCommand("distortion", 2);
-    testCommand("distortion", 5);
-    testCommand("distortion", 9);
-    testCommand("distortion", 10);
+    testCommand("MeasDist", 2);
+    testCommand("MeasDist", 5);
+    testCommand("MeasDist", 9);
+    testCommand("MeasDist", 10);
+    powTestPassFlag = 1;
+    console.log("Pow Test finished with result: " + powTestPassFlag);
 }
 
 function potSetting(pot, setting){
     let potJSON = { "Command" : "PotCtrl", "Params": {"Channel": pot, "Control": setting}};
     potJSONString = JSON.stringify(potJSON)
-    ipcRenderer.send("arduino command", potJSONString);
+    let comm = ipcRenderer.sendSync("arduino command", potJSONString);
+    console.log(comm);
+    if (JSON.parse(comm)["Result"]["Success"] == "False"){
+        commandFailFlag == 0; //indicate a command failure
+    }
 }
 function presSetting(pres){
     let presJSON = {"Command": "PresCtrl", "Params": {"Control": pres}};
     presJSONString = JSON.stringify(presJSON)
-    ipcRenderer.send("arduino command", presJSONString);
+    let comm = ipcRenderer.sendSync("arduino command", presJSONString);
+    console.log(comm);
+    if (JSON.parse(comm)["Result"]["Success"] == "False"){
+        commandFailFlag == 0; //indicate a command failure
+    }
 }
-function inputSetting(input, mvrms, freq){
-    let inputJSON = {"Command": "SigOn", "Params": {"Channel": input, "Level": mvrms, "Frequency": freq}};
-    inputJSONString = JSON.stringify(inputJSON)
-    ipcRenderer.send("arduino command", inputJSONString);
+function sigOn(input, mvrms, freq){
+    let sigOnJSON = {"Command": "SigOn", "Params": {"Channel": input, "Level": mvrms, "Frequency": freq}};
+    sigOnJSONString = JSON.stringify(sigOnJSON)
+    let comm = ipcRenderer.sendSync("arduino command", sigOnJSONString);
+    console.log(comm);
+    if (JSON.parse(comm)["Result"]["Success"] == "False"){
+        commandFailFlag == 0; //indicate a command failure
+    }
 }
-function sigOff (offInput){
-    let inputJSON = {"Command": "SigOff", "Params": {"Channel": offInput}};
+function sigOff(){
+    let inputJSON = {"Command": "SigOff"};
     inputJSONString = JSON.stringify(inputJSON)
-    ipcRenderer.send("arduino command", inputJSONString);
+    let comm = ipcRenderer.sendSync("arduino command", inputJSONString);
+    console.log(comm);
+    if (JSON.parse(comm)["Result"]["Success"] == "False"){
+        commandFailFlag == 0; //indicate a command failure
+    }
 }
 function testCommand(test, value){
     let testJSON;
@@ -129,16 +166,12 @@ function testCommand(test, value){
         testJSON = {Command: test};
     }
     testJSONString = JSON.stringify(testJSON)
-    ipcRenderer.send("arduino command", testJSONString);
-}
-function waitForResponse(){
-    ipcRenderer.on("Command Done", (event, arg) => {
-        if (arg == "failure"){
-            return 0;
-        }
-        else{
-            return 1;
-        }
+    let comm = ipcRenderer.sendSync("arduino command", testJSONString);
+    console.log(comm);
+    if (JSON.parse(comm)["Result"]["Success"] == "False"){
+        commandFailFlag == 0; //indicate a command failure
     }
 }
+
+
 
