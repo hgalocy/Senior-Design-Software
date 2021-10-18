@@ -1,7 +1,7 @@
 const newLine = '\r\n';
 
 let fields = ['Date', 'Test', 'Command', 'Executed', 'Result'];
-let toCsv = [];
+//let toCsv = [];
 
 //canvas dimensions for confetti
 var canvas = document.getElementById("manuf-content");
@@ -187,7 +187,7 @@ ipcRenderer.on("treble test", (event, arg) =>{
         ipcRenderer.send("start pres", "");
     }
     else{
-        writeConsoleAndCSV("Treble test", "passed")
+        writeConsoleAndCSV("Treble test", "failed")
         freqTrebleled.style.background = "green";
     }
 });
@@ -406,15 +406,15 @@ if(document.getElementById("manufExcelPath").value != ""){ //a csv is actually s
 }
 
 
-function writeCSV(){
+function writeCSV(writingData){
     if(document.getElementById("manufExcelPath").value != ""){ //a csv is actually specified
         fs.stat(document.getElementById("manufExcelPath").value, function (err, stat) {
             if (err == null) {
                 console.log('File exists');
             
                 //write the actual data and end with newline
-                toCsv = toCsv + newLine;
-                fs.appendFile(document.getElementById("manufExcelPath").value, toCsv, function (err) {
+                writingData = writingData + newLine;
+                fs.appendFile(document.getElementById("manufExcelPath").value, writingData, function (err) {
                     if (err) throw err;
                     console.log('The "data to append" was appended to file!');
                 });
@@ -429,6 +429,12 @@ function writeCSV(){
 function writeConsoleAndCSV(test, passed){
     appendConsole(test + ": " + passed)
     date = new Date();
-    toCsv = [date, test, "", "", passed];
-    writeCSV();
+    //toCsv = [date, test, "", passed, ""];
+    writeCSV([date, test, "", passed, ""]);
+}
+function writeConsoleAndCSVCommands(test, command, passed, results){
+    appendConsole("test: " + test + ", Command: " + command + ", Executed: " + passed + ", Results: " + results)
+    date = new Date();
+    //toCsv = [date, test, command, passed, results];
+    writeCSV([date, test, command, passed, results]);
 }
