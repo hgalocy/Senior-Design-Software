@@ -25,6 +25,8 @@ body{
     background-color: var(--main-background);
     display: flex;
     flex-direction: row;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 a{
     text-decoration:none;
@@ -177,9 +179,7 @@ h1{
     padding: 4px 12px;
     border-radius: 20px;
 }
-.results-list{
-    background-color: var(--text-area);
-}
+
 
 .dropbtn {
     background-color: var(--input-button);

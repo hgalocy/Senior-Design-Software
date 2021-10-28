@@ -1,12 +1,14 @@
 const { ipcRenderer } = require('electron')
 let comm;
+let resultTitles = ["PreAmpOut","GainStageOut","EmitBypOut","EmitFlloOut","SrcFlloOut","12VOut","8VOut","6VOut","NegDrvOut","PosDrvOut","SPRKPos","SPRKNeg"];
+
 async function DCTest (){
     potSetting("Drive", "CW").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     potSetting("Tone", "MID").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     potSetting("Volume", "CW").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasDC").then(writeConsoleAndCSVCommands("DC Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasDC").then(writeConsoleAndCSVCommands("DC Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringDC(comm)))
     DCTestPassFlag = 1;
     console.log("DC Test finished with result: " + DCTestPassFlag);
 
@@ -17,7 +19,7 @@ function noiseTest (){
     potSetting("Volume", "CW").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Noise Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Noise Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     noiseTestPassFlag = 1;
     console.log("Noise Test finished with result: " + noiseTestPassFlag);
 }
@@ -28,7 +30,7 @@ function gainTest (){
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Guitar", .001, 1000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Gain Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Gain Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     gainTestPassFlag = 1;
     console.log("Gain Test finished with result: " + gainTestPassFlag);
 }
@@ -39,11 +41,11 @@ function flatTest (){
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Guitar", .02, 60).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Flat Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Flat Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Guitar", .02, 1000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Flat Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Flat Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Guitar", .02, 7000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"])) 
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Flat Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Flat Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     flatTestPassFlag = 1;
     console.log("Flat Test finished with result: " + flatTestPassFlag);
 }
@@ -54,11 +56,11 @@ function bassTest (){
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Guitar", .02, 60).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Bass Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Bass Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Guitar", .02, 1000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Bass Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Bass Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Guitar", .02, 7000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Bass Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Bass Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     bassTestPassFlag = 1;
     console.log("Bass Test finished with result: " + bassTestPassFlag);
 }
@@ -69,11 +71,11 @@ function trebleTest (){
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Guitar", .02, 60).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Treble Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Treble Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Guitar", .02, 1000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Treble Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Treble Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Guitar", .02, 7000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Treble Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Treble Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     trebleTestPassFlag = 1;
     console.log("Treble Test finished with result: " + trebleTestPassFlag);
 }
@@ -84,10 +86,10 @@ function presTest (){
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Guitar", .02, 800).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Pres Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Pres Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     presSetting("On").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Guitar", .02, 800).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Pres Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Pres Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     presTestPassFlag = 1;
     console.log("Pres Test finished with result: " + presTestPassFlag);
 }
@@ -98,11 +100,11 @@ function auxTest (){
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Aux", .02, 25).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Aux Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Aux Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Aux", .02, 3000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Aux Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Aux Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     sigOn("Aux", .02, 8000).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Aux Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], ""))
+    testCommand("MeasAC").then(writeConsoleAndCSVCommands("Aux Test", JSON.parse(comm)["Action"], JSON.parse(comm)["Result"]["Success"], outputResultStringAC(comm)))
     auxTestPassFlag = 1;
     console.log("Aux Test finished with result: " + auxTestPassFlag);
 }
@@ -197,6 +199,27 @@ function testCommand(test, value){
         }, 1);
     });
 }
+
+
+//defining helper functions for hardcoded json
+
+function outputResultStringDC(myComm){
+    let resultString = ""
+    resultTitles.forEach(function(result, index){
+        resultString += result+": "+JSON.parse(myComm)["Result"][result]["Level"]+"V; ";
+    });
+    return resultString;
+}
+function outputResultStringAC(myComm){
+    let resultString = ""
+    resultTitles.forEach(function(result, index){
+        resultString += result+": "+JSON.parse(myComm)["Result"][result]["Level"]+"V "+JSON.parse(myComm)["Result"][result]["Freq"]+"Hz; ";
+    });
+    return resultString;
+}
+
+
+
 
 
 

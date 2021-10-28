@@ -13,7 +13,7 @@
     flex-direction: row;
 }
 .manuf-tests{
-    margin: 5px 70px 0px 90px;
+    margin: 5px 70px 0px 45px;
 }
 tr{
     height: 40px;
@@ -27,9 +27,13 @@ tr{
     height: 415px;
     margin: 15px 0px 0px 0px;
     padding: 5px;
+    background-color: var(--text-area);
+    overflow-y:auto;
 }
 .results-list li{
     color: var(--darker-text);
+    font-size: 15px;
+    cursor: auto;
 }
 .flex-row{
     display: flex;
@@ -41,3 +45,4 @@ tr{
     visibility: hidden;
     color: red;
 }
+
