@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron')
+
 let comm;
 let resultTitles = ["PreAmpOut","GainStageOut","EmitBypOut","EmitFlloOut","SrcFlloOut","12VOut","8VOut","6VOut","NegDrvOut","PosDrvOut","SPRKPos","SPRKNeg"];
 

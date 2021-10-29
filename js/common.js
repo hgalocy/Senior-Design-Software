@@ -1,3 +1,4 @@
+const { ipcRenderer } = require('electron')
 const fs = require("fs");
 
 //check if arduino connected on page load
