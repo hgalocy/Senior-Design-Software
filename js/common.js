@@ -1,5 +1,5 @@
-const { ipcRenderer } = require('electron')
-const fs = require("fs");
+//const worker = new Worker('../js/worker.js');
+let dropDownColor = getComputedStyle(document.documentElement).getPropertyValue('--input-button');
 
 //check if arduino connected on page load
 window.onload = function checkIfConnected(){
@@ -42,6 +42,42 @@ const dropOptions = document.getElementsByTagName("li");
 for(let i=0; i<dropOptions.length;i++){
     dropOptions[i].addEventListener('click' , function(){
         dropOptions[i].closest('div').getElementsByTagName("button")[0].innerHTML = dropOptions[i].innerHTML;
+        //potSetting("Drive", "CW").then()
+        let arg = {
+            dropName : (dropOptions[i].parentElement.parentElement.parentElement.parentElement.querySelector(".drop-name").innerHTML.slice(0, -1)),
+            dropSetting : "beans"
+        };
+        dropBtn = dropOptions[i].parentElement.parentElement.querySelector('.dropbtn')
+        switch(dropOptions[i].innerHTML){
+            case "Counter-Clockwise": //change color to yellow, send arduino command, change color to green
+                turnColor(dropBtn,"orange")
+                arg['dropSetting'] = "CCW";
+                ipcRenderer.send("potSetting", arg);
+                break;
+            case "Clockwise": //change color to yellow, send arduino command, change color to green
+                turnColor(dropBtn,"orange")
+                arg['dropSetting'] = "CW";
+                ipcRenderer.send("potSetting", arg);
+                break;
+            case "Middle": //change color to yellow, send arduino command, change color to green
+                turnColor(dropBtn,"orange")
+                arg['dropSetting'] = "MID";
+                ipcRenderer.send("potSetting", arg);
+                break;
+            case "ON": //change color to yellow, send arduino command, change color to green
+                turnColor(dropBtn,"orange")
+                arg['dropSetting'] = "On";
+                ipcRenderer.send("presSetting", arg);
+                break;
+            case "OFF": //change color to yellow, send arduino command, change color to green
+                turnColor(dropBtn,"orange")
+                arg['dropSetting'] = "Off";
+                ipcRenderer.send("presSetting", arg);
+                break;
+            default:
+                console.log("error; invalid selection");
+                turnColor(dropBtn,dropDownColor)
+        }
     } ) ; 
 }
 //close drop down options
@@ -57,3 +93,23 @@ window.onclick = function(event) {
         }
     }
 }
+
+function turnColor(element, color){
+    element.style.background = color;
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          resolve(color);
+        },1);
+    });
+}
+
+
+ipcRenderer.on("dropdown command done", (event, arg) =>{
+    let dropBtnNames = document.querySelectorAll(".drop-name");
+    for(let i=0; i<dropBtnNames.length;i++){
+        if(dropBtnNames[i].innerHTML == arg['dropName']+":"){
+            turnColor(dropBtnNames[i].parentElement.querySelector(".dropbtn"),"green")
+        }
+    }
+});
+

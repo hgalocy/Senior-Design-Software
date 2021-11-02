@@ -1,4 +1,3 @@
-
 let comm;
 let resultTitles = ["PreAmpOut","GainStageOut","EmitBypOut","EmitFlloOut","SrcFlloOut","12VOut","8VOut","6VOut","NegDrvOut","PosDrvOut","SPRKPos","SPRKNeg"];
 
@@ -81,8 +80,8 @@ function trebleTest (){
 }
 function presTest (){
     potSetting("Drive", "MID").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    potSetting("tone", "MID").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
-    potSetting("vol", "MID").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
+    potSetting("Tone", "MID").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
+    potSetting("Volume", "MID").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     presSetting("Off").then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOff().then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))
     sigOn("Guitar", .02, 800).then(appendConsole(JSON.parse(comm)["Action"] + " " + JSON.parse(comm)["Result"]["Success"]))

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/styleAll.css">
     <link rel="stylesheet" href="../css/diagnostic.css">
+    <script defer src="../js/require.js"></script>
+    <script src="../js/interface.js"></script>
     <script defer src="../js/common.js"></script>
     <script defer src="../js/diagnostic.js"></script>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
@@ -35,7 +37,7 @@
           <!--drop downs-->
           <table class="pots-and-presence">
               <tr>
-                <th>Drive:</th>
+                <th class="drop-name">Drive:</th>
                 <th>
                   <div class="dropdown">
                     <button id="driveDropBtn" class="dropbtn">Mode Selection...</button>
@@ -48,7 +50,7 @@
                 </th>
               </tr>
               <tr>
-                <th>Tone:</th>
+                <th class="drop-name">Tone:</th>
                   <th>
                     <div class="dropdown">
                       <button id="toneDropBtn" class="dropbtn">Mode Selection...</button>
@@ -61,7 +63,7 @@
                   </th>
               </tr>
               <tr>
-                <th>Vol:</th>
+                <th class="drop-name">Volume:</th>
                   <th>
                     <div class="dropdown">
                       <button id="volDropBtn" class="dropbtn">Mode Selection...</button>
@@ -74,7 +76,7 @@
                   </th>
               </tr>
               <tr>
-                <th>Presence:</th>
+                <th class="drop-name">Presence:</th>
                   <th>
                     <div class="dropdown">
                       <button id="presenceDropBtn" class="dropbtn">Mode Selection...</button>

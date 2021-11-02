@@ -6,6 +6,7 @@ let path = "";
 let arduinoPort = "";
 let parserFlag = false;
 let win;
+let workerWindow;
 
 function createWindow() {
     win = new BrowserWindow({
@@ -24,6 +25,15 @@ function createWindow() {
     win.on('will-move', (e) => { //account for wierd windows resizing bug
         win.setSize(1040, 594);
     });
+
+    // create hidden worker window
+    workerWindow = new BrowserWindow({
+        //show: false,
+        webPreferences: { nodeIntegration: true,contextIsolation : false }
+    });
+    workerWindow.loadFile('html/worker.html');
+    workerWindow.webContents.openDevTools(); //uncomment for debugging
+    
 }
 
 app.whenReady().then(() => {
@@ -169,6 +179,21 @@ ipcMain.on("start aux", async(event, arg)=>{
 });
 ipcMain.on("start pow", async(event, arg)=>{
     win.webContents.send("pow test", arg)
+});
+
+
+
+/*
+hidden worker process communication
+*/
+ipcMain.on("potSetting", async(event, arg)=>{
+    workerWindow.webContents.send("potSetting", arg)
+});
+ipcMain.on("presSetting", async(event, arg)=>{
+    workerWindow.webContents.send("potSetting", arg)
+});
+ipcMain.on("dropdown command done", async(event, arg)=>{
+    win.webContents.send("dropdown command done", arg)
 });
 
 
