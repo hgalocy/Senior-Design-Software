@@ -237,5 +237,8 @@ h1{
     color: white;
     font-weight: 100;
   }
-
+  #errorMessage{
+    visibility: hidden;
+    color: red;
+}
 

@@ -41,8 +41,5 @@ tr{
     justify-content: space-between;
     align-items: center;
 }
-#errorMessage{
-    visibility: hidden;
-    color: red;
-}
+
 

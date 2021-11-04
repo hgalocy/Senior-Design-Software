@@ -32,6 +32,7 @@
     </div>
     <div class="content">
       <h1>Diagnostic (Manual) Testing</h1>
+      <h3 id="errorMessage">Must fill out all the fields correctly before generating signal</h3>
       <div class="diag-body">
         <div class="diag-body-1">
           <!--drop downs-->
@@ -97,9 +98,23 @@
             <input id="ampInput" class="text-input" placeholder="Please enter a value..." type="text">
           </div>
           <div class="input-value">
-            <label for="ampInput" class="input-label">Frequency:</button>
+            <label for="freqInput" class="input-label">Frequency:</button>
             <input id="freqInput" class="text-input" placeholder="Please enter a value..." type="text">
           </div>
+          <table class="channel">
+              <tr>
+                <th class="drop-name">Channel:</th>
+                <th>
+                  <div class="dropdown">
+                    <button id="channelDropBtn" class="dropbtn">Channel Selection...</button>
+                    <ul id="channelDropDown" class="dropdown-content">
+                      <li id="channelAux" class="channel-drop-option">Aux</li>
+                      <li id="channelGuitar" class="channel-drop-option">Guitar</li>
+                    </ul>
+                  </div>
+                </th>
+              </tr>
+          </table>
           <button type="button" id="genSigBtn" class="green-button">Generate Signal</button>
           <!--signal indicator pop up-->
           <h3 id="signalIndicator">Generating Signal __pp at __Hz</h3>

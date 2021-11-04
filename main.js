@@ -28,7 +28,7 @@ function createWindow() {
 
     // create hidden worker window
     workerWindow = new BrowserWindow({
-        //show: false,
+        show: false,
         webPreferences: { nodeIntegration: true,contextIsolation : false }
     });
     workerWindow.loadFile('html/worker.html');
@@ -183,17 +183,23 @@ ipcMain.on("start pow", async(event, arg)=>{
 
 
 
-/*
-hidden worker process communication
-*/
+//receiveing from renderer process and sending to worker process
 ipcMain.on("potSetting", async(event, arg)=>{
     workerWindow.webContents.send("potSetting", arg)
 });
 ipcMain.on("presSetting", async(event, arg)=>{
     workerWindow.webContents.send("potSetting", arg)
 });
+ipcMain.on("sigOn", async(event, arg)=>{
+    workerWindow.webContents.send("sigOn", arg)
+});
+
+//receiving from worker process and sending to renderer process
 ipcMain.on("dropdown command done", async(event, arg)=>{
     win.webContents.send("dropdown command done", arg)
+});
+ipcMain.on("sigOn command done", async(event, arg)=>{
+    win.webContents.send("sigOn command done", arg)
 });
 
 

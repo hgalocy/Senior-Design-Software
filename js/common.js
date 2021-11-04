@@ -49,36 +49,42 @@ for(let i=0; i<dropOptions.length;i++){
         };
         dropBtn = dropOptions[i].parentElement.parentElement.querySelector('.dropbtn')
         switch(dropOptions[i].innerHTML){
-            case "Counter-Clockwise": //change color to yellow, send arduino command, change color to green
+            case "Counter-Clockwise": //change color to yellow, send arduino command
                 turnColor(dropBtn,"orange")
                 arg['dropSetting'] = "CCW";
                 ipcRenderer.send("potSetting", arg);
                 break;
-            case "Clockwise": //change color to yellow, send arduino command, change color to green
+            case "Clockwise": //change color to yellow, send arduino command
                 turnColor(dropBtn,"orange")
                 arg['dropSetting'] = "CW";
                 ipcRenderer.send("potSetting", arg);
                 break;
-            case "Middle": //change color to yellow, send arduino command, change color to green
+            case "Middle": //change color to yellow, send arduino command
                 turnColor(dropBtn,"orange")
                 arg['dropSetting'] = "MID";
                 ipcRenderer.send("potSetting", arg);
                 break;
-            case "ON": //change color to yellow, send arduino command, change color to green
+            case "ON": //change color to yellow, send arduino command
                 turnColor(dropBtn,"orange")
                 arg['dropSetting'] = "On";
                 ipcRenderer.send("presSetting", arg);
                 break;
-            case "OFF": //change color to yellow, send arduino command, change color to green
+            case "OFF": //change color to yellow, send arduino command
                 turnColor(dropBtn,"orange")
                 arg['dropSetting'] = "Off";
                 ipcRenderer.send("presSetting", arg);
+                break;
+            case "Aux": //change color to green
+                turnColor(dropBtn,"green")
+                break;
+            case "Guitar": //change color to green
+                turnColor(dropBtn,"green")
                 break;
             default:
                 console.log("error; invalid selection");
                 turnColor(dropBtn,dropDownColor)
         }
-    } ) ; 
+    }); 
 }
 //close drop down options
 window.onclick = function(event) {
@@ -94,6 +100,7 @@ window.onclick = function(event) {
     }
 }
 
+//change element background-color to color
 function turnColor(element, color){
     element.style.background = color;
     return new Promise(function(resolve, reject) {
