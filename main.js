@@ -28,7 +28,7 @@ function createWindow() {
 
     // create hidden worker window
     workerWindow = new BrowserWindow({
-        show: false,
+        //show: false,
         webPreferences: { nodeIntegration: true,contextIsolation : false }
     });
     workerWindow.loadFile('html/worker.html');

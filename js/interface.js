@@ -231,4 +231,3 @@ function outputResultStringAC(myComm){
 
 
 
-
