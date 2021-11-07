@@ -130,13 +130,11 @@ function potSetting(pot, setting){
     if (JSON.parse(comm)["Result"]["Success"] == "False"){
         commandFailFlag == 0; //indicate a command failure
     }
-    else {
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              resolve(comm);
-            }, 1);
-        });
-    }
+   return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          resolve(comm);
+        }, 1);
+    });
 }
 function presSetting(pres){
     let presJSON = {"Command": "PresCtrl", "Params": {"Control": pres}};
@@ -146,13 +144,11 @@ function presSetting(pres){
     if (JSON.parse(comm)["Result"]["Success"] == "False"){
         commandFailFlag == 0; //indicate a command failure
     }
-    else{
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              resolve(comm);
-            }, 1);
-        });
-    }
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve(comm);
+        }, 1);
+    });
 }
 function sigOn(input, mvrms, freq){
     let sigOnJSON = {"Command": "SigOn", "Params": {"Channel": input, "Level": mvrms, "Frequency": freq}};
@@ -162,13 +158,11 @@ function sigOn(input, mvrms, freq){
     if (JSON.parse(comm)["Result"]["Success"] == "False"){
         commandFailFlag == 0; //indicate a command failure
     }
-    else{
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              resolve(comm);
-            }, 1);
-        });
-    }
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve(comm);
+        }, 1);
+    });
 }
 function sigOff(){
     let inputJSON = {"Command": "SigOff"};
@@ -178,13 +172,13 @@ function sigOff(){
     if (JSON.parse(comm)["Result"]["Success"] == "False"){
         commandFailFlag == 0; //indicate a command failure
     }
-    else{
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              resolve(comm);
-            }, 1);
-        }); 
-    }
+
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve(comm);
+        }, 1);
+    }); 
+    
 }
 function testCommand(test, value){
     let testJSON;
@@ -200,13 +194,11 @@ function testCommand(test, value){
     if (JSON.parse(comm)["Result"]["Success"] == "False"){
         commandFailFlag == 0; //indicate a command failure
     }
-    else{
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-              resolve(comm);
-            }, 1);
-        });
-    }
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve(comm);
+        }, 1);
+    }); 
 }
 
 

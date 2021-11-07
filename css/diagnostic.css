@@ -4,6 +4,7 @@
 .diag-body{
     display: flex;
     flex-direction: row;
+    margin-top: -30px;
 }
 table{
     margin-top: 45px;
@@ -33,6 +34,12 @@ th{
     padding: 20px;
     background-color: var(--darker-text);
 }
+.button-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: space-around;
+}
 h2{
     width: 350px;
     text-align: center;
@@ -42,12 +49,12 @@ h2{
 label{
     margin-right: 10px;
 }
-.green-button{
-    width: 150px;
+.green-button, .red-button{
+    width: 140px;
+    height: 75px;
     font-size: 20px;
     cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: -20px;
+    margin: 10px 5px -20px 5px;
 }
 #signalIndicator{
     padding-top: 20px;
@@ -55,6 +62,6 @@ label{
     visibility: hidden;
     color: var(--green);
 }
-#errorMessage{
-    margin: 10px 20px;
+#errorMessage1, #errorMessage2{
+    margin: 0px 20px;
 }

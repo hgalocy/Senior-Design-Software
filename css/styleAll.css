@@ -160,6 +160,13 @@ h1{
     font-size: 25px;
     border-radius: 20px;
 }
+.red-button{
+    background-color: var(--text-area);
+    border: none;
+    padding: 15px 25px;
+    font-size: 25px;
+    border-radius: 20px;
+}
 .blue-button{
     background-color: var(--blue);
     border: none;
@@ -182,7 +189,7 @@ h1{
 
 
 .dropbtn {
-    background-color: var(--input-button);
+    background-color: var(--text-area);
     color: white;
     width: 150px;
     height: 30px;
@@ -237,7 +244,7 @@ h1{
     color: white;
     font-weight: 100;
   }
-  #errorMessage{
+  #errorMessage, #errorMessage1, #errorMessage2{
     visibility: hidden;
     color: red;
 }

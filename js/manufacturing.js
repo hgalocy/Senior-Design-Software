@@ -88,12 +88,11 @@ let powTestPassFlag = 0;
 //start button
 document.getElementById("manufStartTestsBtn").addEventListener("click", async function(){
     if (connectionBtn.innerHTML == "Connection:<br>\Connected :)"){ //check if arduino connected before starting tests
-        //go through each test sequentially
         await ipcRenderer.send("reset manufacturing page", "");
         ipcRenderer.send("start DC", "");
     }
     else{
-        document.getElementById("errorMessage").style.visibility = "visible";
+        document.getElementById("errorMessage1").style.visibility = "visible";
     }
 })
 ipcRenderer.on("reset manufacturing page", (event, arg) =>{

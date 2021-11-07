@@ -6,6 +6,9 @@ window.onload = function checkIfConnected(){
     if(ipcRenderer.sendSync("already connected", "") == true){
         connectionBtn.innerHTML = "Connection:<br>\Connected :)";
         document.getElementsByClassName("green-button")[0].style.backgroundColor = "var(--green)";
+        for( let i = 0; i< document.getElementsByClassName("dropbtn").length; i++){
+            document.getElementsByClassName("dropbtn")[i].style.backgroundColor = "var(--input-button";
+        }
     }
 }
 
@@ -15,8 +18,11 @@ connectionBtn.addEventListener("click", function(){
     if(ipcRenderer.sendSync("connect arduino", "") == true){
         connectionBtn.innerHTML = "Connection:<br>\Connected :)";
         document.getElementsByClassName("green-button")[0].style.backgroundColor = "var(--green)";
-        if(document.getElementById("errorMessage").style.visibility == "visible"){
-            document.getElementById("errorMessage").style.visibility = "hidden";
+        for( let i = 0; i< document.getElementsByClassName("dropbtn").length; i++){
+            document.getElementsByClassName("dropbtn")[i].style.backgroundColor = "var(--input-button";
+        }
+        if(document.getElementById("errorMessage1").style.visibility == "visible"){
+            document.getElementById("errorMessage1").style.visibility = "hidden";
         }
     }
 });
@@ -34,7 +40,13 @@ aboutBtn.addEventListener("click", function(){
 const dropDowns = document.getElementsByClassName("dropdown");
 for(let i=0; i<dropDowns.length;i++){
     dropDowns[i].getElementsByTagName("button")[0].addEventListener("click", function() {
-        dropDowns[i].getElementsByTagName("ul")[0].classList.toggle("show");
+        if (connectionBtn.innerHTML != "Connection:<br>\Connected :)"){ //check if arduino connected
+            document.getElementById("errorMessage1").style.visibility = "visible";
+        }
+        else{
+            document.getElementById("errorMessage1").style.visibility = "hidden";
+            dropDowns[i].getElementsByTagName("ul")[0].classList.toggle("show");
+        }
     });
 }
 //display chosen option on button
@@ -42,10 +54,9 @@ const dropOptions = document.getElementsByTagName("li");
 for(let i=0; i<dropOptions.length;i++){
     dropOptions[i].addEventListener('click' , function(){
         dropOptions[i].closest('div').getElementsByTagName("button")[0].innerHTML = dropOptions[i].innerHTML;
-        //potSetting("Drive", "CW").then()
         let arg = {
             dropName : (dropOptions[i].parentElement.parentElement.parentElement.parentElement.querySelector(".drop-name").innerHTML.slice(0, -1)),
-            dropSetting : "beans"
+            dropSetting : "beans" //tmp
         };
         dropBtn = dropOptions[i].parentElement.parentElement.querySelector('.dropbtn')
         switch(dropOptions[i].innerHTML){
