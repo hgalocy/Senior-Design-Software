@@ -193,6 +193,9 @@ ipcMain.on("presSetting", async(event, arg)=>{
 ipcMain.on("sigOn", async(event, arg)=>{
     workerWindow.webContents.send("sigOn", arg)
 });
+ipcMain.on("sigOff", async(event, arg)=>{
+    workerWindow.webContents.send("sigOff", arg)
+});
 
 //receiving from worker process and sending to renderer process
 ipcMain.on("dropdown command done", async(event, arg)=>{
@@ -201,6 +204,9 @@ ipcMain.on("dropdown command done", async(event, arg)=>{
 ipcMain.on("sigOn command done", async(event, arg)=>{
     win.webContents.send("sigOn command done", arg)
 });
+ipcMain.on("sigOff command done", async(event, arg)=>{
+    win.webContents.send("sigOff command done",arg)
+})
 
 
 /*function parsing () {

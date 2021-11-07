@@ -3,6 +3,7 @@
     --menu-background: #172288;
     --menu-secondary: #3f3f3f;
     --green: #46BC4A;
+    --gray-green: rgb(78, 99, 80);
     --yellow: #ffe600;
     --red: #ff0000;
     --blue: #172CE7;
@@ -169,13 +170,6 @@ h1{
 }
 .blue-button{
     background-color: var(--blue);
-    border: none;
-    padding: 15px 25px;
-    font-size: 25px;
-    border-radius: 20px;
-}
-.red-button{
-    background-color: var(--red);
     border: none;
     padding: 15px 25px;
     font-size: 25px;

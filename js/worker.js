@@ -6,7 +6,9 @@ ipcRenderer.on("presSetting", (event, arg) =>{
 });
 ipcRenderer.on("sigOn", (event, arg) =>{
     sigOn(arg['input'], arg['mvrms'], arg['freq']).then(ipcRenderer.send("sigOn command done", updateSigOnArg(arg)));
-    
+});
+ipcRenderer.on("sigOff", (event, arg) =>{
+    sigOff().then(ipcRenderer.send("sigOff command done", arg));
 });
 
 function updateSigOnArg(arg){

@@ -37,11 +37,14 @@ aboutBtn.addEventListener("click", function(){
 
 //drop down stuff
 //open options when button clicked
+let sigGen = 0;
 const dropDowns = document.getElementsByClassName("dropdown");
 for(let i=0; i<dropDowns.length;i++){
     dropDowns[i].getElementsByTagName("button")[0].addEventListener("click", function() {
-        if (connectionBtn.innerHTML != "Connection:<br>\Connected :)"){ //check if arduino connected
-            document.getElementById("errorMessage1").style.visibility = "visible";
+        if (connectionBtn.innerHTML != "Connection:<br>\Connected :)" || sigGen!=0){ //check if arduino connected and if signal is being generated
+            if(!sigGen){
+                document.getElementById("errorMessage1").style.visibility = "visible";
+            }
         }
         else{
             document.getElementById("errorMessage1").style.visibility = "hidden";
