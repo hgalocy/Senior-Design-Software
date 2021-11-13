@@ -21,8 +21,8 @@ genSigBtn.addEventListener("click", function(){
         }
         let arg = {
             input : document.getElementById("channelDropBtn").innerHTML,
-            mvrms : document.getElementById("ampInput").value,
-            freq : document.getElementById("freqInput").value
+            mvrms : Number(document.getElementById("ampInput").value),
+            freq : Number(document.getElementById("freqInput").value)
         };
         ipcRenderer.send("sigOn", arg); //send message to main to worker process to commmand arduino
         document.getElementById("errorMessage2").style.visibility = "hidden";

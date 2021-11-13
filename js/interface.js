@@ -153,6 +153,9 @@ function presSetting(pres){
 function sigOn(input, mvrms, freq){
     let sigOnJSON = {"Command": "SigOn", "Params": {"Channel": input, "Level": mvrms, "Frequency": freq}};
     sigOnJSONString = JSON.stringify(sigOnJSON)
+    
+    console.log("SENDING STRING: "+ sigOnJSONString)
+
     comm = ipcRenderer.sendSync("arduino command", sigOnJSONString);
     console.log(comm);
     if (JSON.parse(comm)["Result"]["Success"] == "False"){
