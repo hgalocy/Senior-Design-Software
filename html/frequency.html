@@ -60,57 +60,57 @@
         <!--drop downs-->
         <table class="pots">
           <tr>
-            <th>Drive:</th>
+            <th class="drop-name">Drive:</th>
             <th>
               <div class="dropdown">
-                <button id="pot1DropBtn" class="dropbtn">Mode Selection...</button>
-                <ul id="pot1DropDown" class="dropdown-content">
-                  <li id="pot1CCW" class="pot1-drop-option">Counter-Clockwise</li>
-                  <li id="pot1CW" class="pot1-drop-option">Clockwise</li>
-                  <li id="pot1Mid" class="pot1-drop-option">Middle</li>
+                <button id="driveDropBtn" class="dropbtn">Mode Selection...</button>
+                <ul id="driveDropDown" class="dropdown-content">
+                  <li id="driveCCW" class="drive-drop-option">Counter-Clockwise</li>
+                  <li id="driveCW" class="drive-drop-option">Clockwise</li>
+                  <li id="driveMid" class="drive-drop-option">Middle</li>
                 </ul>
               </div>
             </th>
           </tr>
           <tr>
-            <th>Tone:</th>
-              <th>
-                <div class="dropdown">
-                  <button id="pot2DropBtn" class="dropbtn">Mode Selection...</button>
-                  <ul id="pot2DropDown" class="dropdown-content">
-                    <li id="pot2CCW" class="pot2-drop-option">Counter-Clockwise</li>
-                    <li id="pot2CW" class="pot2-drop-option">Clockwise</li>
-                    <li id="pot2Mid" class="pot2-drop-option">Middle</li>
-                  </ul>
-                </div>
-              </th>
+            <th class="drop-name">Tone:</th>
+            <th>
+              <div class="dropdown">
+                <button id="toneDropBtn" class="dropbtn">Mode Selection...</button>
+                <ul id="toneDropDown" class="dropdown-content">
+                  <li id="toneCCW" class="tone-drop-option">Counter-Clockwise</li>
+                  <li id="toneCW" class="tone-drop-option">Clockwise</li>
+                  <li id="toneMid" class="tone-drop-option">Middle</li>
+                </ul>
+              </div>
+            </th>
           </tr>
           <tr>
-            <th>Volume:</th>
-              <th>
-                <div class="dropdown">
-                  <button id="pot3DropBtn" class="dropbtn">Mode Selection...</button>
-                  <ul id="pot3DropDown" class="dropdown-content">
-                    <li id="pot3CCW" class="pot3-drop-option">Counter-Clockwise</li>
-                    <li id="pot3CW" class="pot3-drop-option">Clockwise</li>
-                    <li id="pot3Mid" class="pot3-drop-option">Middle</li>
-                  </ul>
-                </div>
-              </th>
+            <th class="drop-name">Volume:</th>
+            <th>
+              <div class="dropdown">
+                <button id="volDropBtn" class="dropbtn">Mode Selection...</button>
+                <ul id="volDropDown" class="dropdown-content">
+                  <li id="volCCW" class="vol-drop-option">Counter-Clockwise</li>
+                  <li id="volCW" class="vol-drop-option">Clockwise</li>
+                  <li id="volMid" class="vol-drop-option">Middle</li>
+                </ul>
+              </div>
+            </th>
           </tr>
         </table>
         <table class="presence-and-level">
           <tr>
-            <th>Presence:</th>
-              <th>
-                <div class="dropdown">
-                  <button id="presenceDropBtn" class="dropbtn">Mode Selection...</button>
-                  <ul id="presenceDropDown" class="dropdown-content">
-                    <li id="presenceON" class="presence-drop-option">ON</li>
-                    <li id="presenceOFF" class="presence-drop-option">OFF</li>
-                  </ul>
-                </div>
-              </th>
+            <th class="drop-name">Presence:</th>
+            <th>
+              <div class="dropdown">
+                <button id="presenceDropBtn" class="dropbtn">Mode Selection...</button>
+                <ul id="presenceDropDown" class="dropdown-content">
+                  <li id="presenceON" class="presence-drop-option">ON</li>
+                  <li id="presenceOFF" class="presence-drop-option">OFF</li>
+                </ul>
+              </div>
+            </th>
           </tr>
           <tr>
             <th><label for="levelInput" class="input-label">Input Level:</button></th>
@@ -120,7 +120,10 @@
       </div>
       <div class="freq-body-3">
         <div class="graph">Graph</div>
-        <button type="button" id="freqSaveGraphBtn" class="blue-button">Save Graph</button>
+        <div class="flex-col">
+          <h3 id="errorMessage1">Must connect arduino first</h3>
+          <button type="button" id="freqSaveGraphBtn" class="blue-button">Save Graph</button>
+        </div>
       </div>
     </div>
   </body>

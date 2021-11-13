@@ -40,7 +40,7 @@ aboutBtn.addEventListener("click", function(){
 const dropDowns = document.getElementsByClassName("dropdown");
 for(let i=0; i<dropDowns.length;i++){
     dropDowns[i].getElementsByTagName("button")[0].addEventListener("click", function() {
-        if (connectionBtn.innerHTML != "Connection:<br>\Connected :)"){ //check if arduino connected and if signal is being generated
+        if (connectionBtn.innerHTML != "Connection:<br>\Connected :)"){ //check if arduino connected
             document.getElementById("errorMessage1").style.visibility = "visible";
         }
         else{

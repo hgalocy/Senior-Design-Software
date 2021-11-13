@@ -243,3 +243,7 @@ h1{
     color: red;
 }
 
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
