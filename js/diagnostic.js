@@ -3,7 +3,7 @@ const dropBtns = document.getElementsByClassName("dropbtn");
 const freqInput = document.getElementById("freqInput");
 const ampInput = document.getElementById("ampInput");
 const offSigBtn = document.getElementById("offSigBtn");
-let sigOn = 0; //=1 when signal is generated, 0 when off
+let sigGen = 0; //=1 when signal is generated, 0 when off
 genSigBtn.addEventListener("click", function(){
     if (connectionBtn.innerHTML != "Connection:<br>\Connected :)"){ //check if arduino connected before starting tests
         //go through each test sequentially

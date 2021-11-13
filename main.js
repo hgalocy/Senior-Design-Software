@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, webContents } = require('electron')
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 
@@ -7,7 +7,6 @@ let arduinoPort = "";
 let parserFlag = false;
 let win;
 let workerWindow;
-
 function createWindow() {
     win = new BrowserWindow({
         width: 1040,
@@ -33,7 +32,14 @@ function createWindow() {
     });
     workerWindow.loadFile('html/worker.html');
     workerWindow.webContents.openDevTools(); //uncomment for debugging
-    
+
+    //event fires when navigating pages
+    win.webContents.on('will-navigate', (event, url) => {
+        if(connected){//if arduino connected, sigOff
+            let arg = "switching pages";
+            workerWindow.webContents.send("sigOff", arg)
+        }
+  })
 }
 
 app.whenReady().then(() => {
@@ -148,6 +154,9 @@ ipcMain.on("arduino command", async(event, arg)=>{
         event.returnValue = (data); //send response to original command (interface.js for manufacturing page)
     });
 });
+
+
+
 
 //start the individual tests for manufacturing page
 ipcMain.on("reset manufacturing page", (event, arg)=>{
