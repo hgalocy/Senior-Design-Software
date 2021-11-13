@@ -3,7 +3,7 @@ const dropBtns = document.getElementsByClassName("dropbtn");
 const freqInput = document.getElementById("freqInput");
 const ampInput = document.getElementById("ampInput");
 const offSigBtn = document.getElementById("offSigBtn");
-
+let sigOn = 0; //=1 when signal is generated, 0 when off
 genSigBtn.addEventListener("click", function(){
     if (connectionBtn.innerHTML != "Connection:<br>\Connected :)"){ //check if arduino connected before starting tests
         //go through each test sequentially
@@ -26,13 +26,13 @@ genSigBtn.addEventListener("click", function(){
         };
         ipcRenderer.send("sigOn", arg); //send message to main to worker process to commmand arduino
         document.getElementById("errorMessage2").style.visibility = "hidden";
-        for( let i = 0; i< document.getElementsByClassName("dropbtn").length; i++){
+        /*for( let i = 0; i< document.getElementsByClassName("dropbtn").length; i++){
             document.getElementsByClassName("dropbtn")[i].style.backgroundColor = "var(--gray-green";
         }
         freqInput.readOnly = true;
         ampInput.readOnly = true;
         freqInput.style.backgroundColor = "var(--dark-text)";
-        ampInput.style.backgroundColor = "var(--dark-text)";
+        ampInput.style.backgroundColor = "var(--dark-text)";*/
         offSigBtn.style.backgroundColor = "var(--red)";
         sigGen = 1;
     }
@@ -56,12 +56,13 @@ ipcRenderer.on("sigOn command done", (event, arg) =>{ //display on label what si
 ipcRenderer.on("sigOff command done", (event, arg) =>{ //signal is off so hide the label saying a signal is on
     document.getElementById("signalIndicator").style.visibility = "hidden";
     sigGen = 0;
+    /*
     for( let i = 0; i< document.getElementsByClassName("dropbtn").length; i++){
         document.getElementsByClassName("dropbtn")[i].style.backgroundColor = "green";
     }
     freqInput.style.backgroundColor = "var(--input-button)";
     ampInput.style.backgroundColor = "var(--input-button)";
     freqInput.readOnly = false;
-    ampInput.readOnly = false;
+    ampInput.readOnly = false;*/
 });
 
