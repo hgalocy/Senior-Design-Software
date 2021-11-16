@@ -72,49 +72,33 @@ let auxled = document.getElementById("auxled");
 let powled = document.getElementById("powled");
 let grayledColor = DCled.getAttribute("background-color");
 
-
-let commandFailFlag = 1; //0 if a command fails
-//0 if unexecuted, 1 if pass, 2 if fail
-let DCTestPassFlag = 0;
-let noiseTestPassFlag = 0;
-let gainTestPassFlag = 0;
-let flatTestPassFlag = 0;
-let bassTestPassFlag = 0;
-let trebleTestPassFlag = 0;
-let presTestPassFlag = 0;
-let auxTestPassFlag = 0;
-let powTestPassFlag = 0;
-
 //start button
 document.getElementById("manufStartTestsBtn").addEventListener("click", async function(){
     if (connectionBtn.innerHTML == "Connection:<br>\Connected :)"){ //check if arduino connected before starting tests
-        await ipcRenderer.send("reset manufacturing page", "");
-        ipcRenderer.send("start DC", "");
+        //reset UI
+        clearConsole()
+        canvas.style.visibility = "hidden";
+        noiseled.style.background = grayledColor;
+        gainled.style.background = grayledColor;
+        freqFlatled.style.background = grayledColor;
+        freqBassled.style.background = grayledColor;
+        freqTrebleled.style.background = grayledColor;
+        freqPresled.style.background = grayledColor;
+        auxled.style.background = grayledColor;
+        powled.style.background = grayledColor;
+        DCled.style.background = "yellow";
+        console.log("reset")
+        ipcRenderer.send("start DC", ""); //start first test
     }
     else{
         document.getElementById("errorMessage1").style.visibility = "visible";
     }
 })
-ipcRenderer.on("reset manufacturing page", (event, arg) =>{
-    clearConsole()
-    canvas.style.visibility = "hidden";
-    noiseled.style.background = grayledColor;
-    gainled.style.background = grayledColor;
-    freqFlatled.style.background = grayledColor;
-    freqBassled.style.background = grayledColor;
-    freqTrebleled.style.background = grayledColor;
-    freqPresled.style.background = grayledColor;
-    auxled.style.background = grayledColor;
-    powled.style.background = grayledColor;
-    DCled.style.background = "yellow";
-    console.log("reset")
-    return;
-});
 
+//communicate between worker, main, and renderer process
 let date;
-ipcRenderer.on("DC test", async (event, arg) =>{
-    DCTest();
-    if (commandFailFlag && DCTestPassFlag){//only execute the next test if the prior one passed
+ipcRenderer.on("DC test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("DC test", "passed") //update csv and console
         DCled.style.background = "green";
         noiseled.style.background = "yellow";
@@ -125,9 +109,8 @@ ipcRenderer.on("DC test", async (event, arg) =>{
         DCled.style.background = "red";
     }
 })
-ipcRenderer.on("noise test", (event, arg) =>{
-    noiseTest();
-    if (commandFailFlag && noiseTestPassFlag){//only execute the next test if the prior one passed
+ipcRenderer.on("noise test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Noise test", "passed") //update csv and console
         noiseled.style.background = "green";
         gainled.style.background = "yellow";
@@ -137,10 +120,9 @@ ipcRenderer.on("noise test", (event, arg) =>{
         writeConsoleAndCSV("Noise test", "failed")
         noiseled.style.background = "red";
     }
-});
-ipcRenderer.on("gain test", (event, arg) =>{
-    gainTest();
-    if (commandFailFlag && gainTestPassFlag){
+})
+ipcRenderer.on("gain test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Gain test", "passed") //update csv and console
         gainled.style.background = "green";
         freqFlatled.style.background = "yellow";
@@ -150,10 +132,9 @@ ipcRenderer.on("gain test", (event, arg) =>{
         writeConsoleAndCSV("Gain test", "failed")
         gainled.style.background = "red";
     }
-});
-ipcRenderer.on("flat test", (event, arg) =>{
-    flatTest();
-    if (commandFailFlag && flatTestPassFlag){
+})
+ipcRenderer.on("flat test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Flat test", "passed") //update csv and console
         freqFlatled.style.background = "green";
         freqBassled.style.background = "yellow";
@@ -163,10 +144,9 @@ ipcRenderer.on("flat test", (event, arg) =>{
         writeConsoleAndCSV("Flat test", "failed")
         freqFlatled.style.background = "red";
     }
-});
-ipcRenderer.on("bass test", (event, arg) =>{
-    bassTest();
-    if (commandFailFlag && bassTestPassFlag){
+})
+ipcRenderer.on("bass test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Bass test", "passed") //update csv and console
         freqBassled.style.background = "green";
         freqTrebleled.style.background = "yellow";
@@ -176,10 +156,9 @@ ipcRenderer.on("bass test", (event, arg) =>{
         writeConsoleAndCSV("Bass test", "failed")
         freqBassled.style.background = "red";
     }
-});
-ipcRenderer.on("treble test", (event, arg) =>{
-    trebleTest();
-    if (commandFailFlag && trebleTestPassFlag){
+})
+ipcRenderer.on("treble test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Treble test", "passed") //update csv and console
         freqTrebleled.style.background = "green";
         freqPresled.style.background = "yellow";
@@ -189,10 +168,9 @@ ipcRenderer.on("treble test", (event, arg) =>{
         writeConsoleAndCSV("Treble test", "failed")
         freqTrebleled.style.background = "green";
     }
-});
-ipcRenderer.on("pres test", (event, arg) =>{
-    presTest();
-    if (commandFailFlag && presTestPassFlag){
+})
+ipcRenderer.on("pres test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Pres test", "passed") //update csv and console
         freqPresled.style.background = "green";
         auxled.style.background = "yellow";
@@ -202,10 +180,9 @@ ipcRenderer.on("pres test", (event, arg) =>{
         writeConsoleAndCSV("Pres test", "failed")
         freqPresled.style.background = "red";
     }
-});
-ipcRenderer.on("aux test", (event, arg) =>{
-    auxTest();
-    if (commandFailFlag && auxTestPassFlag){
+})
+ipcRenderer.on("aux test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Aux test", "passed") //update csv and console
         auxled.style.background = "green";
         powled.style.background = "yellow";
@@ -215,10 +192,9 @@ ipcRenderer.on("aux test", (event, arg) =>{
         writeConsoleAndCSV("Aux test", "failed")
         auxled.style.background = "red";
     }
-});
-ipcRenderer.on("pow test", (event, arg) =>{
-    powTest();
-    if (commandFailFlag && powTestPassFlag){
+})
+ipcRenderer.on("pow test finished", async (event, arg) =>{
+    if (arg == "passed"){//only execute the next test if the prior one passed
         writeConsoleAndCSV("Pow test", "passed") //update csv and console
         powled.style.background = "green";
         canvas.style.visibility='visible';
@@ -227,7 +203,7 @@ ipcRenderer.on("pow test", (event, arg) =>{
         writeConsoleAndCSV("Pow test", "failed")
         powled.style.background = "red";
     }
-});
+})
 
 
 /*
@@ -390,21 +366,16 @@ function appendConsole(data){
     node.appendChild(document.createTextNode(data));
     manufConsole.appendChild(node);
     console.log("added to console: " + data);
+    liItems = document.getElementById("manufConsole").getElementsByTagName("li")
+    lastItem = liItems[liItems.length-1];
+    lastItem.scrollIntoView();
 }
-
-
-
-
-
-
 
 //write to CSV
 if(document.getElementById("manufExcelPath").value != ""){ //a csv is actually specified
     const ws = fs.createWriteStream(pathDisplay.value);
     fastcsv.write(data, { headers: true }).pipe(ws);
 }
-
-
 function writeCSV(writingData){
     if(document.getElementById("manufExcelPath").value != ""){ //a csv is actually specified
         fs.stat(document.getElementById("manufExcelPath").value, function (err, stat) {
@@ -429,7 +400,7 @@ function writeConsoleAndCSV(test, passed){
     appendConsole(test + ": " + passed)
     date = new Date();
     //toCsv = [date, test, "", passed, ""];
-    writeCSV([date, test, "", passed, ""]);
+    writeCSV([date, test, "", "", passed]);
 }
 function writeConsoleAndCSVCommands(test, command, passed, results){
     appendConsole("test: " + test + ", Command: " + command + ", Executed: " + passed + ", Results: " + results)
@@ -437,3 +408,10 @@ function writeConsoleAndCSVCommands(test, command, passed, results){
     //toCsv = [date, test, command, passed, results];
     writeCSV([date, test, command, passed, results]);
 }
+//received command from worker.js->main.js
+ipcRenderer.on("append console", async (event, arg) =>{
+    appendConsole(arg)
+})
+ipcRenderer.on("append console and csv commands", async (event, arg) =>{
+    writeConsoleAndCSVCommands(arg["test"], arg["action"], arg["success"], arg["resultString"])
+})

@@ -1,3 +1,4 @@
+//DISCLAIMER: In comments, I say refer to the workerWindow as the worker process and the win window as the renderer process
 const { app, BrowserWindow, ipcMain, dialog, webContents } = require('electron')
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
@@ -52,7 +53,6 @@ app.on('window-all-closed', function () {
     app.quit();
 });
 
-
 //open new child window
 let childWin;
 ipcMain.on("openWindow", function(event, arg){
@@ -90,7 +90,6 @@ ipcMain.on("chooseFile", async (event, arg)=>{
     let file = await dialog.showOpenDialog(win, optionsF); //open the file explorer with specified options
     event.reply("fileChosen", file);
 })
-
 
 let connected = false;
 //check if arduino already connected on page load
@@ -136,7 +135,6 @@ ipcMain.on("connect arduino", (event, arg) => {
     }
 })
 
-
 //communicate to arduino when prompted from GUI
 ipcMain.on("arduino command", async(event, arg)=>{
     //send to arduino
@@ -155,44 +153,69 @@ ipcMain.on("arduino command", async(event, arg)=>{
     });
 });
 
-
-
-
 //start the individual tests for manufacturing page
-ipcMain.on("reset manufacturing page", (event, arg)=>{
-    win.webContents.send("reset manufacturing page", arg)
-});
-ipcMain.on("start DC", (event, arg)=>{
-    win.webContents.send("DC test", arg)
+ipcMain.on("start DC", (event, arg)=>{ //have worker process begin dc test
+    workerWindow.webContents.send("DC test", arg)
 });
 ipcMain.on("start noise", async(event, arg)=>{
-    win.webContents.send("noise test", arg)
+    workerWindow.webContents.send("noise test", arg)
 });
 ipcMain.on("start gain", async(event, arg)=>{
-    win.webContents.send("gain test", arg)
+    workerWindow.webContents.send("gain test", arg)
 });
 ipcMain.on("start flat", async(event, arg)=>{
-    win.webContents.send("flat test", arg)
+    workerWindow.webContents.send("flat test", arg)
 });
 ipcMain.on("start bass", async(event, arg)=>{
-    win.webContents.send("bass test", arg)
+    workerWindow.webContents.send("bass test", arg)
 });
 ipcMain.on("start treble", async(event, arg)=>{
-    win.webContents.send("treble test", arg)
+    workerWindow.webContents.send("treble test", arg)
 });
 ipcMain.on("start pres", async(event, arg)=>{
-    win.webContents.send("pres test", arg)
+    workerWindow.webContents.send("pres test", arg)
 });
 ipcMain.on("start aux", async(event, arg)=>{
-    win.webContents.send("aux test", arg)
+    workerWindow.webContents.send("aux test", arg)
 });
 ipcMain.on("start pow", async(event, arg)=>{
-    win.webContents.send("pow test", arg)
+    workerWindow.webContents.send("pow test", arg)
+});
+ipcMain.on("append console", (event, arg)=>{ //forward to win process to append arg to console
+    win.webContents.send("append console", arg)
+});
+ipcMain.on("append console and csv commands", (event, arg)=>{ //forward to win process to append arg to console and csv becasue test command completed
+    win.webContents.send("append console and csv commands", arg)
+});
+ipcMain.on("DC test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("DC test finished", arg)
+});
+ipcMain.on("noise test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("noise test finished", arg)
+});
+ipcMain.on("gain test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("gain test finished", arg)
+});
+ipcMain.on("flat test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("flat test finished", arg)
+});
+ipcMain.on("bass test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("bass test finished", arg)
+});
+ipcMain.on("treble test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("treble test finished", arg)
+});
+ipcMain.on("pres test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("pres test finished", arg)
+});
+ipcMain.on("aux test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("aux test finished", arg)
+});
+ipcMain.on("pow test finished", (event, arg)=>{ //forward to win process to show test completion
+    win.webContents.send("pow test finished", arg)
 });
 
-
-
-//receiveing from renderer process and sending to worker process
+//receiveing from renderer process and sending to worker process for diagnostic and freq page drop down menus
 ipcMain.on("potSetting", async(event, arg)=>{
     workerWindow.webContents.send("potSetting", arg)
 });
@@ -206,7 +229,7 @@ ipcMain.on("sigOff", async(event, arg)=>{
     workerWindow.webContents.send("sigOff", arg)
 });
 
-//receiving from worker process and sending to renderer process
+//receiving from worker process and sending to renderer process for diagnostic and freq page drop down menus
 ipcMain.on("dropdown command done", async(event, arg)=>{
     win.webContents.send("dropdown command done", arg)
 });
