@@ -131,3 +131,13 @@ ipcRenderer.on("dropdown command done", (event, arg) =>{
     }
 });
 
+function disableNav(){
+    document.getElementById("menuBar").style.pointerEvents = "none";
+    document.getElementById("menuBar").style.backgroundColor = "gray";
+    document.getElementById("aboutBtn").style.backgroundColor = "gray";
+}
+function enableNav(){
+    document.getElementById("menuBar").style.pointerEvents = "auto";
+    document.getElementById("menuBar").style.backgroundColor = "var(--menu-background)";
+    document.getElementById("aboutBtn").style.backgroundColor = "var(--menu-secondary)";
+}

@@ -89,6 +89,7 @@ document.getElementById("manufStartTestsBtn").addEventListener("click", async fu
         DCled.style.background = "yellow";
         console.log("reset")
         ipcRenderer.send("start DC", ""); //start first test
+        disableNav();
     }
     else{
         document.getElementById("errorMessage1").style.visibility = "visible";
@@ -107,6 +108,7 @@ ipcRenderer.on("DC test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("DC test", "failed") //update csv and console
         DCled.style.background = "red";
+        enableNav(); 
     }
 })
 ipcRenderer.on("noise test finished", async (event, arg) =>{
@@ -119,6 +121,7 @@ ipcRenderer.on("noise test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("Noise test", "failed")
         noiseled.style.background = "red";
+        enableNav(); 
     }
 })
 ipcRenderer.on("gain test finished", async (event, arg) =>{
@@ -131,6 +134,7 @@ ipcRenderer.on("gain test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("Gain test", "failed")
         gainled.style.background = "red";
+        enableNav(); 
     }
 })
 ipcRenderer.on("flat test finished", async (event, arg) =>{
@@ -143,6 +147,7 @@ ipcRenderer.on("flat test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("Flat test", "failed")
         freqFlatled.style.background = "red";
+        enableNav(); 
     }
 })
 ipcRenderer.on("bass test finished", async (event, arg) =>{
@@ -155,6 +160,7 @@ ipcRenderer.on("bass test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("Bass test", "failed")
         freqBassled.style.background = "red";
+        enableNav(); 
     }
 })
 ipcRenderer.on("treble test finished", async (event, arg) =>{
@@ -167,6 +173,7 @@ ipcRenderer.on("treble test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("Treble test", "failed")
         freqTrebleled.style.background = "green";
+        enableNav(); 
     }
 })
 ipcRenderer.on("pres test finished", async (event, arg) =>{
@@ -179,6 +186,7 @@ ipcRenderer.on("pres test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("Pres test", "failed")
         freqPresled.style.background = "red";
+        enableNav(); 
     }
 })
 ipcRenderer.on("aux test finished", async (event, arg) =>{
@@ -191,6 +199,7 @@ ipcRenderer.on("aux test finished", async (event, arg) =>{
     else{
         writeConsoleAndCSV("Aux test", "failed")
         auxled.style.background = "red";
+        enableNav(); 
     }
 })
 ipcRenderer.on("pow test finished", async (event, arg) =>{
@@ -198,10 +207,12 @@ ipcRenderer.on("pow test finished", async (event, arg) =>{
         writeConsoleAndCSV("Pow test", "passed") //update csv and console
         powled.style.background = "green";
         canvas.style.visibility='visible';
+        enableNav(); 
     }
     else{
         writeConsoleAndCSV("Pow test", "failed")
         powled.style.background = "red";
+        enableNav(); 
     }
 })
 
