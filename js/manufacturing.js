@@ -90,6 +90,8 @@ document.getElementById("manufStartTestsBtn").addEventListener("click", async fu
         console.log("reset")
         ipcRenderer.send("start DC", ""); //start first test
         disableNav();
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "gray"; //disable start tests button until done
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "none";
     }
     else{
         document.getElementById("errorMessage1").style.visibility = "visible";
@@ -109,6 +111,8 @@ ipcRenderer.on("DC test finished", async (event, arg) =>{
         writeConsoleAndCSV("DC test", "failed") //update csv and console
         DCled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("noise test finished", async (event, arg) =>{
@@ -122,6 +126,8 @@ ipcRenderer.on("noise test finished", async (event, arg) =>{
         writeConsoleAndCSV("Noise test", "failed")
         noiseled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("gain test finished", async (event, arg) =>{
@@ -135,6 +141,8 @@ ipcRenderer.on("gain test finished", async (event, arg) =>{
         writeConsoleAndCSV("Gain test", "failed")
         gainled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("flat test finished", async (event, arg) =>{
@@ -148,6 +156,8 @@ ipcRenderer.on("flat test finished", async (event, arg) =>{
         writeConsoleAndCSV("Flat test", "failed")
         freqFlatled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("bass test finished", async (event, arg) =>{
@@ -161,6 +171,8 @@ ipcRenderer.on("bass test finished", async (event, arg) =>{
         writeConsoleAndCSV("Bass test", "failed")
         freqBassled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("treble test finished", async (event, arg) =>{
@@ -174,6 +186,8 @@ ipcRenderer.on("treble test finished", async (event, arg) =>{
         writeConsoleAndCSV("Treble test", "failed")
         freqTrebleled.style.background = "green";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("pres test finished", async (event, arg) =>{
@@ -187,6 +201,8 @@ ipcRenderer.on("pres test finished", async (event, arg) =>{
         writeConsoleAndCSV("Pres test", "failed")
         freqPresled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("aux test finished", async (event, arg) =>{
@@ -200,6 +216,8 @@ ipcRenderer.on("aux test finished", async (event, arg) =>{
         writeConsoleAndCSV("Aux test", "failed")
         auxled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
 ipcRenderer.on("pow test finished", async (event, arg) =>{
@@ -213,153 +231,10 @@ ipcRenderer.on("pow test finished", async (event, arg) =>{
         writeConsoleAndCSV("Pow test", "failed")
         powled.style.background = "red";
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
 })
-
-
-/*
-//received 
-ipcRenderer.on("DC test", (event, arg) =>{
-    console.log(arg.length)
-    if (arg== "success"){
-        DCled.style.background = "green";
-        ipcRenderer.send("noise test", "");
-        noiseled.style.background = "yellow";
-    }
-    else{
-        DCled.style.background = "red";
-    }
-    appendConsole("DC test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["DC test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("noise test", (event, arg) =>{
-    if (arg == "success"){
-        noiseled.style.background = "green";
-        ipcRenderer.send("midband test", "");
-        gainMidbandled.style.background = "yellow";
-    }
-    else{
-        noiseled.style.background = "red";
-    }
-    appendConsole("noise test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["noise test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("midband test", (event, arg) =>{
-    if (arg == "success"){
-        gainMidbandled.style.background = "green";
-        ipcRenderer.send("guitar test", "");
-        gainGuitarled.style.background = "yellow";
-    }
-    else{
-        gainMidbandled.style.background = "red";
-    }
-    appendConsole("midband test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["midband test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("guitar test", (event, arg) =>{
-    if (arg == "success"){
-        gainGuitarled.style.background = "green";
-        ipcRenderer.send("flat test", "");
-        freqFlatled.style.background = "yellow";
-    }
-    else{
-        gainGuitarled.style.background = "red";
-    }
-    appendConsole("guitar test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["guitar test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("flat test", (event, arg) =>{
-    if (arg == "success"){
-        freqFlatled.style.background = "green";
-        ipcRenderer.send("bass test", "");
-        freqBassled.style.background = "yellow";
-    }
-    else{
-        freqFlatled.style.background = "red";
-    }
-    appendConsole("flat test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["flat test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("bass test", (event, arg) =>{
-    if (arg == "success"){
-        freqBassled.style.background = "green";
-        ipcRenderer.send("treble test", "");
-        freqTrebleled.style.background = "yellow";
-    }
-    else{
-        freqBassled.style.background = "red";
-    }
-    appendConsole("bass test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["bass test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("treble test", (event, arg) =>{
-    if (arg == "success"){
-        freqTrebleled.style.background = "green";
-        ipcRenderer.send("pres test", "");
-        freqPresled.style.background = "yellow";
-    }
-    else{
-        freqTrebleled.style.background = "red";
-    }
-    appendConsole("treble test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["treble test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("pres test", (event, arg) =>{
-    if (arg == "success"){
-        freqPresled.style.background = "green";
-        ipcRenderer.send("aux test", "");
-        auxled.style.background = "yellow";
-    }
-    else{
-        freqPresled.style.background = "red";
-    }
-    appendConsole("pres test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["pres test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("aux test", (event, arg) =>{
-    if (arg == "success"){
-        auxled.style.background = "green";
-        ipcRenderer.send("pow test", "");
-        powled.style.background = "yellow";
-    }
-    else{
-        auxled.style.background = "red";
-    }
-    appendConsole("aux test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["aux test", arg, date];
-    writeCSV();
-});
-ipcRenderer.on("pow test", (event, arg) =>{
-    if (arg == "success"){
-        powled.style.background = "green";
-        canvas.style.visibility='visible';
-    }
-    else{
-        powled.style.background = "red";
-    }
-    appendConsole("pow test" + ": " + arg)
-    let date = new Date();
-    toCsv = ["pow test", arg, date];
-    writeCSV();
-});
-*/
 
 //result console
 //clear console on start tests click

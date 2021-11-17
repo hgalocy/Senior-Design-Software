@@ -1,7 +1,7 @@
 //for manufacturing page
 ipcRenderer.on("DC test", async (event, arg) =>{
     DCTest();
-    if (!commandFailFlag && DCTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && DCTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("DC test finished", "passed")
     }
     else{
@@ -10,7 +10,7 @@ ipcRenderer.on("DC test", async (event, arg) =>{
 })
 ipcRenderer.on("noise test", async (event, arg) =>{
     noiseTest();
-    if (!commandFailFlag && noiseTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && noiseTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("noise test finished", "passed")
     }
     else{
@@ -19,7 +19,7 @@ ipcRenderer.on("noise test", async (event, arg) =>{
 })
 ipcRenderer.on("gain test", async (event, arg) =>{
     gainTest();
-    if (!commandFailFlag && gainTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && gainTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("gain test finished", "passed")
     }
     else{
@@ -28,7 +28,7 @@ ipcRenderer.on("gain test", async (event, arg) =>{
 })
 ipcRenderer.on("flat test", async (event, arg) =>{
     flatTest();
-    if (!commandFailFlag && flatTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && flatTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("flat test finished", "passed")
     }
     else{
@@ -37,7 +37,7 @@ ipcRenderer.on("flat test", async (event, arg) =>{
 })
 ipcRenderer.on("bass test", async (event, arg) =>{
     bassTest();
-    if (!commandFailFlag && bassTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && bassTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("bass test finished", "passed")
     }
     else{
@@ -46,7 +46,7 @@ ipcRenderer.on("bass test", async (event, arg) =>{
 })
 ipcRenderer.on("treble test", async (event, arg) =>{
     trebleTest();
-    if (!commandFailFlag && trebleTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && trebleTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("treble test finished", "passed")
     }
     else{
@@ -55,7 +55,7 @@ ipcRenderer.on("treble test", async (event, arg) =>{
 })
 ipcRenderer.on("pres test", async (event, arg) =>{
     presTest();
-    if (!commandFailFlag && presTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && presTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("pres test finished", "passed")
     }
     else{
@@ -64,7 +64,7 @@ ipcRenderer.on("pres test", async (event, arg) =>{
 })
 ipcRenderer.on("aux test", async (event, arg) =>{
     auxTest();
-    if (!commandFailFlag && auxTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && auxTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("aux test finished", "passed")
     }
     else{
@@ -73,7 +73,7 @@ ipcRenderer.on("aux test", async (event, arg) =>{
 })
 ipcRenderer.on("pow test", async (event, arg) =>{
     powTest();
-    if (!commandFailFlag && powTestPassFlag){//only execute the next test if the prior one passed
+    if (!commandFailFlag && powTestPassFlag == 1){//only execute the next test if the prior one passed
         ipcRenderer.send("pow test finished", "passed")
     }
     else{

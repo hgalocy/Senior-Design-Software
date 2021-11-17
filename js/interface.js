@@ -22,28 +22,28 @@ let passingDC = {
     "NegDrvOutL" : 5.8,
     "PosDrvOutH" : 6.3,
     "PosDrvOutL" : 6.1,
-    "SPRKPosH" : "",
-    "SPRKPosL" : "",
-    "SPRKNegH" : "",
-    "SPRKNegL" : ""
+    "SPRKPosH" : 9000000,
+    "SPRKPosL" : -9000000,
+    "SPRKNegH" : 9000000,
+    "SPRKNegL" : -9000000
 }
 let passingAC = {
     "PreAmpOutH" : .0052,
     "PreAmpOutL" : .0048,
     "GainStageOutH" : .095,
     "GainStageOutL" : .085,
-    "EmitBypOutH" : "",
-    "EmitBypOutL" : "",
+    "EmitBypOutH" : 9000000,
+    "EmitBypOutL" : -9000000,
     "EmitFlloOutH" : .094,
     "EmitFlloOutL" : .084,
     "SrcFlloOutH" : .072,
     "SrcFlloOutL" : .066,
-    "12VOutH" : "",
-    "12VOutL" : "",
-    "8VOutH": "",
-    "8VOutL" : "",
-    "6VOutH" : "",
-    "6VOutL" : "",
+    "12VOutH" : 9000000,
+    "12VOutL" : -9000000,
+    "8VOutH": 9000000,
+    "8VOutL" : -9000000,
+    "6VOutH" : 9000000,
+    "6VOutL" : -9000000,
     "NegDrvOutH" : 1.6,
     "NegDrvOutL" : 1.3,
     "PosDrvOutH" : 1.6,
@@ -64,6 +64,7 @@ let trebleTestPassFlag = 0;
 let presTestPassFlag = 0;
 let auxTestPassFlag = 0;
 let powTestPassFlag = 0;
+let resultPassFlag = 0;
 
 function DCTest (){
     potSetting("Drive", "CW").then(sendAppendConsole(comm))
@@ -71,8 +72,13 @@ function DCTest (){
     potSetting("Volume", "CW").then(sendAppendConsole(comm))
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
-    testCommand("MeasDC").then(sendAppendConsoleCsv("DC Test", comm, "DC"))
-    DCTestPassFlag = 1;
+    testCommand("MeasDC").then(sendAppendConsoleCsv("DC Test", comm, "DC").then(resultPassFlag += testingPass(comm, "DC")))
+    if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
+        DCTestPassFlag = 1; //indicate pass
+    }
+    else{ //results are in range
+        DCTestPassFlag = 2; //indicate failure
+    }
     console.log("DC Test finished with result: " + DCTestPassFlag);
 }
 function noiseTest (){
@@ -320,6 +326,33 @@ function sendAppendConsoleCsv(test, myComm, command){
             resolve(comm);
         }, 1);
     }); 
+}
+
+//evaluate results of test to see if it failed
+function testingPass(myComm, dcOrac){
+    if(dcOrac == "AC"){
+        passing = passingAC;
+    }
+    else{
+        passing = passingDC;
+    }
+    for (let result in passing) {
+        let currResult = JSON.parse(myComm)["Result"][result.substring(0, result.length - 1)]["Level"]; //store arduino resturned result in variable
+        let HorL = result.substr(result.length - 1); //check if we are comparing for high or low
+        if (HorL == "H"){ //check high range
+            if (currResult > passing[result]){
+                console.log(result.substring(0, result.length - 1) + " of " + currResult + " failed")
+                return 2; //indicate test failure
+            }
+        }
+        else{ //check low range
+            if (currResult < passing[result]){
+                console.log(result.substring(0, result.length - 1) + " of " + currResult + " failed")
+                return 2; //indicate test failure
+            }
+        }
+    }
+    return 0; //all results are in range, pass
 }
 
 
