@@ -225,6 +225,9 @@ function powTest (){
     testCommand("MeasDist", 10).then(sendAppendConsoleCsv("Pow Test", comm, "DIST"))
     powTestPassFlag = 1; //always passes becus checks not implemented
     console.log("Pow Test finished with result: " + powTestPassFlag);
+    potSetting("Drive", "CCW").then(sendAppendConsole(comm))
+    potSetting("Tone", "CCW").then(sendAppendConsole(comm))
+    potSetting("Volume", "CCW").then(sendAppendConsole(comm))
 }
 
 //comands to arduino
