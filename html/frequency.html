@@ -7,7 +7,7 @@
     <script defer src="../js/require.js"></script>
     <script defer src="../js/common.js"></script>
     <script defer src="../js/frequency.js"></script>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">-->
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Pancake</title>
   </head>
@@ -31,6 +31,7 @@
     </div>
     <div class="content">
       <h1>Frequency Response Testing</h1>
+      <h3 id="errorMessage1">Must connect arduino first</h3>
       <div class="freq-body-1">
         <!--specify excel file-->
         <div class="input">
@@ -119,11 +120,7 @@
         </table>
       </div>
       <div class="freq-body-3">
-        <div class="graph">Graph</div>
-        <div class="flex-col">
-          <h3 id="errorMessage1">Must connect arduino first</h3>
-          <button type="button" id="freqSaveGraphBtn" class="blue-button">Save Graph</button>
-        </div>
+        <div id="graph" class="graph"></div>
       </div>
     </div>
   </body>

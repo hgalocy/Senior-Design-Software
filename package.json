@@ -17,6 +17,8 @@
     "csv-parser": "^3.0.0",
     "fast-csv": "^4.3.6",
     "johnny-five": "^2.1.0",
-    "json2csv": "^5.0.6"
+    "json2csv": "^5.0.6",
+    "plotly.js-dist": "^2.6.3",
+    "plotly.js-dist-min": "^2.6.3"
   }
 }
