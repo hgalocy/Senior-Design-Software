@@ -15,6 +15,7 @@ var trace1 = {
         pad: 4
     },
     xaxis: {
+        type: "log",
         title: {
           text: 'Frequency (Hz)',
           font: {
@@ -45,7 +46,7 @@ document.getElementById("freqExcelPath").addEventListener("click", function(){
 //choosing file function for opening dialog for file explorer via IPC communication with main
 let csvFile = "";
 const newLine = '\r\n';
-let fields = ['Date', 'Test', 'Command', 'Executed', 'Result'];
+let fields = ['Date', 'Frequency (Hz)', 'Magnitude (dB)', 'SPRKPOS (mVrms)'];
 function chooseAFile(pathDisplay){
     ipcRenderer.send("chooseFile", ""); //send message to main.js to open file explorer to choose file
     ipcRenderer.on("fileChosen", (event, arg) =>{ //wait for user to choose file
@@ -86,6 +87,7 @@ function writeCSV(writingData){
             
                 //write the actual data and end with newline
                 writingData = writingData + newLine;
+                console.log(writingData)
                 fs.appendFile(document.getElementById("freqExcelPath").value, writingData, function (err) {
                     if (err) throw err;
                     console.log('The "data to append" was appended to file!');
@@ -139,9 +141,12 @@ ipcRenderer.on("freq point", (event, arg) =>{ //display on label what signal is 
     Plotly.newPlot('graph', data, layout);
     console.log("NEW POINT: x="+ arg["x"] + " y=" + arg["y"])
     console.log(arg["last"])
+    date = new Date();
+    writeCSV([date, arg["x"], arg["y"], arg["sprkmvrms"]]);
     if(arg["last"] == 1){ //is it the last point?
         enableNav();
         document.getElementById("freqStartTestsBtn").style.backgroundColor = "var(--green)"; //disable start tests button until done
         document.getElementById("freqStartTestsBtn").style.pointerEvents = "auto";
     } 
 });
+

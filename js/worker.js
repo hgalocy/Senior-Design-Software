@@ -116,7 +116,8 @@ ipcRenderer.on("freq measure", (event, arg)=>{
         x : "",
         y : "",
         freq : "",
-        last : ""
+        last : "",
+        sprkmvrms : ""
     }
     let actualVals = {
         input : "",
@@ -132,6 +133,7 @@ ipcRenderer.on("freq measure", (event, arg)=>{
         console.log("SPRK= " + sprk);
         point["y"] = 20*Math.log10(sprk/actualVals["mvrms"]);
         point["x"] = actualVals["freq"];
+        point["sprkmvrms"] = sprk;
         if ((i + diffPoints) > stopF){
             point["last"] = 1;
         }
