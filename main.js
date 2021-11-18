@@ -138,6 +138,7 @@ ipcMain.on("connect arduino", (event, arg) => {
 //communicate to arduino when prompted from GUI
 ipcMain.on("arduino command", async(event, arg)=>{
     //send to arduino
+    console.log(arg) //get rid of
     arduinoPort.write(arg, (err) => {
         if (err) {
           return console.log('Error on write: ', err.message);
