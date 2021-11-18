@@ -1,3 +1,40 @@
+//plotting
+var trace1 = {
+    x: [],
+    y: [],
+    type: 'scatter'
+  };
+  var data = [trace1];
+  var layout = {
+    showlegend: false, 
+    margin: {
+        l: 50,
+        r: 20,
+        b: 50,
+        t: 50,
+        pad: 4
+    },
+    xaxis: {
+        title: {
+          text: 'Frequency (Hz)',
+          font: {
+            family: 'Courier New, monospace',
+            size: 18,
+            color: '#7f7f7f'
+          }
+        },
+      },
+      yaxis: {
+        title: {
+          text: 'Magnitude (dB)',
+          font: {
+            family: 'Courier New, monospace',
+            size: 18,
+            color: '#7f7f7f'
+          }
+        }
+    }};
+  Plotly.newPlot('graph', data, layout);
 //document interaction for choosing file
 document.getElementById("freqExcelBtn").addEventListener("click", function(){
     chooseAFile(document.getElementById("freqExcelPath"));
@@ -70,61 +107,41 @@ let fileExistsSync = (file) => {
       }
 }
 
+
+
 //start button
 document.getElementById("freqStartTestsBtn").addEventListener("click", async function(){
     if (connectionBtn.innerHTML == "Connection:<br>\Connected :)"){ //check if arduino connected before starting tests
-        //reset graph
+        trace1["x"] = [];
+        trace1["y"] = [];
+        Plotly.newPlot('graph', data, layout);
         disableNav();
         document.getElementById("freqStartTestsBtn").style.backgroundColor = "gray"; //disable start tests button until done
         document.getElementById("freqStartTestsBtn").style.pointerEvents = "none";
+        let arg = {
+            numTimes: Number(document.getElementById("pointsNumInput").value),
+            startFreq: Number(document.getElementById("startFreqInput").value),
+            endFreq: Number(document.getElementById("stopFreqInput").value),
+            levelIn: Number(document.getElementById("levelInput").value)
+        }
+        ipcRenderer.send("freq measure", arg); //send message to main to worker process to commmand arduino
+        
     }
     else{
         document.getElementById("errorMessage1").style.visibility = "visible";
     }
 })
 
-
-//plotting
-var trace1 = {
-    x: [1, 2, 3, 4],
-    y: [10, 15, 13, 17],
-    type: 'scatter'
-  };
-  
-  var trace2 = {
-    x: [1, 2, 3, 4],
-    y: [16, 5, 11, 9],
-    type: 'scatter'
-  };
-  
-  var data = [trace1, trace2];
-  var layout = {
-    showlegend: false, 
-    margin: {
-        l: 50,
-        r: 20,
-        b: 50,
-        t: 50,
-        pad: 4
-    },
-    xaxis: {
-        title: {
-          text: 'Frequency (Hz)',
-          font: {
-            family: 'Courier New, monospace',
-            size: 18,
-            color: '#7f7f7f'
-          }
-        },
-      },
-      yaxis: {
-        title: {
-          text: 'Weird ass Y Axis (dB)',
-          font: {
-            family: 'Courier New, monospace',
-            size: 18,
-            color: '#7f7f7f'
-          }
-        }
-    }};
-  Plotly.newPlot('graph', data, layout);
+//receive point
+ipcRenderer.on("freq point", (event, arg) =>{ //display on label what signal is generated
+    trace1["x"].push(arg["x"])
+    trace1["y"].push(arg["y"])
+    Plotly.newPlot('graph', data, layout);
+    console.log("NEW POINT: x="+ arg["x"] + " y=" + arg["y"])
+    console.log(arg["last"])
+    if(arg["last"] == 1){ //is it the last point?
+        enableNav();
+        document.getElementById("freqStartTestsBtn").style.backgroundColor = "var(--green)"; //disable start tests button until done
+        document.getElementById("freqStartTestsBtn").style.pointerEvents = "auto";
+    } 
+});

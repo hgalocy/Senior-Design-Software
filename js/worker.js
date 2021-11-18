@@ -101,3 +101,40 @@ function updateSigOnArg(arg){
     newArg["freq"] = JSON.parse(comm)["Result"]["freqCast"];
     return newArg;
 }
+
+
+//freq page
+//start freq page
+ipcRenderer.on("freq measure", (event, arg)=>{
+    //grab values from arg
+    let points = arg["numTimes"];
+    let startF = arg["startFreq"];
+    let stopF = arg["endFreq"];
+    let mvrms = arg["levelIn"];
+    let diffPoints = (stopF-startF)/(points-1);
+    let point = {
+        x : "",
+        y : "",
+        freq : "",
+        last : ""
+    }
+    let actualVals = {
+        input : "",
+        mvrms : "",
+        freq : ""
+    }
+    let sprk;
+    console.log("STUFF: " + points + " " + startF + " " + stopF + " " + mvrms + " " + diffPoints)
+    for (var i = startF; i <= stopF; i += diffPoints){
+        sigOn("Guitar", mvrms, i).then(actualVals = updateSigOnArg(actualVals));
+        testCommand("MeasAC")
+        sprk = JSON.parse(comm)["Result"]["SPRKPos"]["Level"];
+        console.log("SPRK= " + sprk);
+        point["y"] = 20*Math.log10(sprk/actualVals["mvrms"]);
+        point["x"] = actualVals["freq"];
+        if ((i + diffPoints) > stopF){
+            point["last"] = 1;
+        }
+        ipcRenderer.send("freq point", point)
+    }
+})

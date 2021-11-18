@@ -19,7 +19,7 @@ function createWindow() {
         }
     });
     win.removeMenu();
-    win.setResizable(false);
+    //win.setResizable(false);
     win.loadFile('html/manufacturing.html');
     win.webContents.openDevTools(); //uncomment for debugging
     win.on('will-move', (e) => { //account for wierd windows resizing bug
@@ -229,6 +229,10 @@ ipcMain.on("sigOn", async(event, arg)=>{
 ipcMain.on("sigOff", async(event, arg)=>{
     workerWindow.webContents.send("sigOff", arg)
 });
+//freqpage
+ipcMain.on("freq measure", async(event, arg)=>{
+    workerWindow.webContents.send("freq measure", arg)
+});
 
 //receiving from worker process and sending to renderer process for diagnostic and freq page drop down menus
 ipcMain.on("dropdown command done", async(event, arg)=>{
@@ -238,9 +242,12 @@ ipcMain.on("sigOn command done", async(event, arg)=>{
     win.webContents.send("sigOn command done", arg)
 });
 ipcMain.on("sigOff command done", async(event, arg)=>{
-    win.webContents.send("sigOff command done",arg)
+    win.webContents.send("sigOff command done", arg)
 })
-
+//freqpage
+ipcMain.on("freq point", async(event, arg)=>{
+    win.webContents.send("freq point", arg)
+})
 
 /*function parsing () {
     //prints whatever arduino prints
