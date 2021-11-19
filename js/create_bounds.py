@@ -23,16 +23,16 @@ with open("C:/ComCode/Software/js/expected.csv", newline='') as csvfile:
                 x = x.replace(" ","")
                 if row["Test"] == "DC Test":
                     x = x[:-1].split(":")
-                    tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.2))
-                    tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.2))
+                    tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.5))
+                    tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.5))
                 else:
                     x = x[:-5].split(":")
                     if x[0] == "SPRKPos" or x[0] == "SPRKNeg" or x[0] == "NegDrvOut" or x[0] == "PosDrvOut":
+                        tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.5))
+                        tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.5))
+                    else:
                         tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.15))
                         tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.15))
-                    else:
-                        tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.05))
-                        tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.05))
             except:
                 pass
         out = str(tempDict).replace("'","\"")

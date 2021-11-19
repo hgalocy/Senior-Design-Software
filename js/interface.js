@@ -30,7 +30,7 @@ function DCTest (){
     else{ //results are in range
         DCTestPassFlag = 2; //indicate failure
     }
-    //DCTestPassFlag = 1; //force pass
+    // DCTestPassFlag = 1; //force pass
     console.log("DC Test finished with result: " + DCTestPassFlag);
 }
 function noiseTest (){
@@ -46,7 +46,7 @@ function noiseTest (){
     else{ //results are in range
         noiseTestPassFlag = 2; //indicate failure
     }
-    //noiseTestPassFlag = 1; //force pass
+    // noiseTestPassFlag = 1; //force pass
     console.log("Noise Test finished with result: " + noiseTestPassFlag);
 }
 function gainTest (){
@@ -63,7 +63,7 @@ function gainTest (){
     else{ //results are in range
         gainTestPassFlag = 2; //indicate failure
     }
-    //gainTestPassFlag = 1; //force pass
+    // gainTestPassFlag = 1; //force pass
     console.log("Gain Test finished with result: " + gainTestPassFlag);
 }
 function flatTest (){
