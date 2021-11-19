@@ -111,6 +111,7 @@ ipcRenderer.on("freq measure", (event, arg)=>{
     let startF = arg["startFreq"];
     let stopF = arg["endFreq"];
     let mvrms = arg["levelIn"];
+    let inputLevel = arg["inputLevel"];
     let diffPoints = (stopF-startF)/(points-1);
     let point = {
         x : "",
@@ -134,6 +135,7 @@ ipcRenderer.on("freq measure", (event, arg)=>{
         point["y"] = 20*Math.log10(sprk/actualVals["mvrms"]);
         point["x"] = actualVals["freq"];
         point["sprkmvrms"] = sprk;
+        point["inputLevel"] = actualVals["mvrms"];
         if ((i + diffPoints) > stopF){
             point["last"] = 1;
         }
