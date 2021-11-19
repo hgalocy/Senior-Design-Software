@@ -1,58 +1,8 @@
+const jsonString = fs.readFileSync('./js/bounds.json')
+const passing = JSON.parse(jsonString)
 let comm;
 let resultTitles = ["PreAmpOut","GainStageOut","EmitBypOut","EmitFlloOut","SrcFlloOut","12VOut","8VOut","6VOut","NegDrvOut","PosDrvOut","SPRKPos","SPRKNeg"];
 //test passing parameters
-let passingDC = {
-    "PreAmpOutH" : 5.6,
-    "PreAmpOutL" : 5.2,
-    "GainStageOutH" : 6.3,
-    "GainStageOutL" : 5.7,
-    "EmitBypOutH" : 3,
-    "EmitBypOutL" : 2.7,
-    "EmitFlloOutH" : 3.5,
-    "EmitFlloOutL" : 2.9,
-    "SrcFlloOutH" : 4,
-    "SrcFlloOutL" : 3.6,
-    "12VOutH" : 12.5,
-    "12VOutL" : 11.5,
-    "8VOutH": 8.1,
-    "8VOutL" : 7.9,
-    "6VOutH" : 6.15,
-    "6VOutL" : 5.85,
-    "NegDrvOutH" : 6,
-    "NegDrvOutL" : 5.8,
-    "PosDrvOutH" : 6.15,
-    "PosDrvOutL" : 5.85,
-    "SPRKPosH" : 9000000,
-    "SPRKPosL" : -9000000,
-    "SPRKNegH" : 9000000,
-    "SPRKNegL" : -9000000
-}
-let passingAC = {
-    "PreAmpOutH" : .0052,
-    "PreAmpOutL" : .0048,
-    "GainStageOutH" : .095,
-    "GainStageOutL" : .085,
-    "EmitBypOutH" : 9000000,
-    "EmitBypOutL" : -9000000,
-    "EmitFlloOutH" : .094,
-    "EmitFlloOutL" : .084,
-    "SrcFlloOutH" : .072,
-    "SrcFlloOutL" : .066,
-    "12VOutH" : 9000000,
-    "12VOutL" : -9000000,
-    "8VOutH": 9000000,
-    "8VOutL" : -9000000,
-    "6VOutH" : 9000000,
-    "6VOutL" : -9000000,
-    "NegDrvOutH" : 1.6,
-    "NegDrvOutL" : 1.3,
-    "PosDrvOutH" : 1.6,
-    "PosDrvOutL" : 1.3,
-    "SPRKPosH" : 3.1,
-    "SPRKPosL" : 2.5,
-    "SPRKNegH" : 3.1,
-    "SPRKNegL" : 2.5
-}
 let commandFailFlag = 0; //1 if a command fails
 //0 if unexecuted, 1 if pass, 2 if fail
 let DCTestPassFlag = 0;
@@ -68,18 +18,19 @@ let resultPassFlag = 0;
 
 function DCTest (){
     resultPassFlag = 0; //reset result pass flag in case incremented from last run through
-    potSetting("Drive", "CW").then(sendAppendConsole(comm))
-    potSetting("Tone", "MID").then(sendAppendConsole(comm))
-    potSetting("Volume", "CW").then(sendAppendConsole(comm))
+    potSetting("Drive", "CCW").then(sendAppendConsole(comm))
+    potSetting("Tone", "CCW").then(sendAppendConsole(comm))
+    potSetting("Volume", "CCW").then(sendAppendConsole(comm))
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
-    testCommand("MeasDC").then(sendAppendConsoleCsv("DC Test", comm, "DC").then(resultPassFlag += testingPass(comm, "DC")))
+    testCommand("MeasDC").then(sendAppendConsoleCsv("DC Test", comm, "DC").then(resultPassFlag += testingPass(comm, "DC Test")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         DCTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         DCTestPassFlag = 2; //indicate failure
     }
+    //DCTestPassFlag = 1; //force pass
     console.log("DC Test finished with result: " + DCTestPassFlag);
 }
 function noiseTest (){
@@ -88,13 +39,14 @@ function noiseTest (){
     potSetting("Volume", "CW").then(sendAppendConsole(comm))
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Noise Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Noise Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Noise Test")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         noiseTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         noiseTestPassFlag = 2; //indicate failure
     }
+    //noiseTestPassFlag = 1; //force pass
     console.log("Noise Test finished with result: " + noiseTestPassFlag);
 }
 function gainTest (){
@@ -104,13 +56,14 @@ function gainTest (){
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
     sigOn("Guitar", .001, 1000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Gain Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Gain Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Gain Test")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         gainTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         gainTestPassFlag = 2; //indicate failure
     }
+    //gainTestPassFlag = 1; //force pass
     console.log("Gain Test finished with result: " + gainTestPassFlag);
 }
 function flatTest (){
@@ -120,17 +73,18 @@ function flatTest (){
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
     sigOn("Guitar", .02, 60).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Flat Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Flat Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Flat Test 1")))
     sigOn("Guitar", .02, 1000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Flat Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Flat Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Flat Test 2")))
     sigOn("Guitar", .02, 7000).then(sendAppendConsole(comm)) 
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Flat Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Flat Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Flat Test 3")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         flatTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         flatTestPassFlag = 2; //indicate failure
     }
+    // flatTestPassFlag = 1; //force pass
     console.log("Flat Test finished with result: " + flatTestPassFlag);
 }
 function bassTest (){
@@ -140,17 +94,18 @@ function bassTest (){
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
     sigOn("Guitar", .02, 60).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Bass Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Bass Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Bass Test 1")))
     sigOn("Guitar", .02, 1000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Bass Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Bass Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Bass Test 2")))
     sigOn("Guitar", .02, 7000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Bass Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Bass Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Bass Test 3")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         bassTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         bassTestPassFlag = 2; //indicate failure
     }
+    // bassTestPassFlag = 1; //force pass
     console.log("Bass Test finished with result: " + bassTestPassFlag);
 }
 function trebleTest (){
@@ -160,17 +115,18 @@ function trebleTest (){
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
     sigOn("Guitar", .02, 60).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Treble Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Treble Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Treble Test 1")))
     sigOn("Guitar", .02, 1000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Treble Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Treble Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Treble Test 2")))
     sigOn("Guitar", .02, 7000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Treble Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Treble Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Treble Test 3")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         trebleTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         trebleTestPassFlag = 2; //indicate failure
     }
+    // trebleTestPassFlag = 1; //force pass
     console.log("Treble Test finished with result: " + trebleTestPassFlag);
 }
 function presTest (){
@@ -180,16 +136,17 @@ function presTest (){
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
     sigOn("Guitar", .02, 800).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Pres Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Pres Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Pres Test 1")))
     presSetting("On").then(sendAppendConsole(comm))
     sigOn("Guitar", .02, 800).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Pres Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Pres Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Pres Test 2")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         presTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         presTestPassFlag = 2; //indicate failure
     }
+    // presTestPassFlag = 1; //force pass
     console.log("Pres Test finished with result: " + presTestPassFlag);
 }
 function auxTest (){
@@ -199,17 +156,18 @@ function auxTest (){
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
     sigOn("Aux", .02, 25).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Aux Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Aux Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Aux Test 1")))
     sigOn("Aux", .02, 3000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Aux Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Aux Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Aux Test 2")))
     sigOn("Aux", .02, 8000).then(sendAppendConsole(comm))
-    testCommand("MeasAC").then(sendAppendConsoleCsv("Aux Test", comm, "AC").then(resultPassFlag += testingPass(comm, "AC")))
+    testCommand("MeasAC").then(sendAppendConsoleCsv("Aux Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Aux Test 3")))
     if (resultPassFlag == 0){ //if results failed, resultPassFlag would have been incremented
         auxTestPassFlag = 1; //indicate pass
     }
     else{ //results are in range
         auxTestPassFlag = 2; //indicate failure
     }
+    // auxTestPassFlag = 1; //force pass
     console.log("Aux Test finished with result: " + auxTestPassFlag);
 }
 function powTest (){ 
@@ -368,25 +326,21 @@ function sendAppendConsoleCsv(test, myComm, command){
 }
 
 //evaluate results of test to see if it failed
-function testingPass(myComm, dcOrac){
-    if(dcOrac == "AC"){ //grab appropriate expected results to compare
-        passing = passingAC;
-    }
-    else{
-        passing = passingDC;
-    }
-    for (let result in passing) {
+function testingPass(myComm, typePass){
+    pass = passing[typePass];
+    console.log(passing[typePass]["12VOutH"]);
+    for (let result in pass) {
         let currResult = JSON.parse(myComm)["Result"][result.substring(0, result.length - 1)]["Level"]; //store arduino resturned result in variable
         let HorL = result.substr(result.length - 1); //check if we are comparing for high or low
         if (HorL == "H"){ //check high range
-            if (currResult > passing[result]){
+            if (currResult > pass[result]){
                 console.log(result.substring(0, result.length - 1) + " of " + currResult + " failed")
                 ipcRenderer.send("append console", result.substring(0, result.length - 1) + " of " + currResult + " failed")
                 return 2; //indicate test failure
             }
         }
         else{ //check low range
-            if (currResult < passing[result]){
+            if (currResult < pass[result]){
                 console.log(result.substring(0, result.length - 1) + " of " + currResult + " failed")
                 ipcRenderer.send("append console", result.substring(0, result.length - 1) + " of " + currResult + " failed")
                 return 2; //indicate test failure
