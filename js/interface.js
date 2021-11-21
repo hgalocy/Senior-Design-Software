@@ -34,9 +34,9 @@ function DCTest (){
     console.log("DC Test finished with result: " + DCTestPassFlag);
 }
 function noiseTest (){
-    potSetting("Drive", "CW").then(sendAppendConsole(comm))
-    potSetting("Tone", "CW").then(sendAppendConsole(comm))
-    potSetting("Volume", "CW").then(sendAppendConsole(comm))
+    potSetting("Drive", "MID").then(sendAppendConsole(comm))
+    potSetting("Tone", "MID").then(sendAppendConsole(comm))
+    potSetting("Volume", "MID").then(sendAppendConsole(comm))
     presSetting("Off").then(sendAppendConsole(comm))
     sigOff().then(sendAppendConsole(comm))
     testCommand("MeasAC").then(sendAppendConsoleCsv("Noise Test", comm, "AC").then(resultPassFlag += testingPass(comm, "Noise Test")))

@@ -19,16 +19,16 @@ function createWindow() {
         }
     });
     win.removeMenu();
-    //win.setResizable(false);
+    win.setResizable(false);
     win.loadFile('html/manufacturing.html');
-    win.webContents.openDevTools(); //uncomment for debugging
+    //win.webContents.openDevTools(); //uncomment for debugging
     win.on('will-move', (e) => { //account for wierd windows resizing bug
         win.setSize(1040, 594);
     });
-
+    win.on("closed", () => app.quit());
     // create hidden worker window
     workerWindow = new BrowserWindow({
-        //show: false,
+        show: false,
         webPreferences: { nodeIntegration: true,contextIsolation : false }
     });
     workerWindow.loadFile('html/worker.html');

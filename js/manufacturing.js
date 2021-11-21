@@ -226,6 +226,8 @@ ipcRenderer.on("pow test finished", async (event, arg) =>{
         powled.style.background = "green";
         canvas.style.visibility='visible';
         enableNav(); 
+        document.getElementById("manufStartTestsBtn").style.backgroundColor = "var(--green)"; //enable start tests
+        document.getElementById("manufStartTestsBtn").style.pointerEvents = "auto";
     }
     else{
         writeConsoleAndCSV("Pow test", "failed")

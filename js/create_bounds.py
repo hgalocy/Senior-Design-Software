@@ -23,16 +23,22 @@ with open("C:/ComCode/Software/js/expected.csv", newline='') as csvfile:
                 x = x.replace(" ","")
                 if row["Test"] == "DC Test":
                     x = x[:-1].split(":")
-                    tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.5))
-                    tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.5))
+                    if x[0] == "SPRKPos" or x[0] == "SPRKNeg" or x[0] == "NegDrvOut" or x[0] == "PosDrvOut":
+                        tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+3))
+                        tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-3))
+                    else:
+                        tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+1))
+                        tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-1))
                 else:
                     x = x[:-5].split(":")
-                    if x[0] == "SPRKPos" or x[0] == "SPRKNeg" or x[0] == "NegDrvOut" or x[0] == "PosDrvOut":
-                        tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.5))
-                        tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.5))
-                    else:
-                        tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.15))
-                        tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.15))
+                    # if x[0] == "SPRKPos" or x[0] == "SPRKNeg" or x[0] == "NegDrvOut" or x[0] == "PosDrvOut":
+                    #     tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.5))
+                    #     tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.5))
+                    # else:
+                    #     tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+0.15))
+                    #     tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-0.15))
+                    tempDict[x[0]+"H"] = float("{:.4f}".format(float(x[1])+12))
+                    tempDict[x[0]+"L"] = float("{:.4f}".format(float(x[1])-12))
             except:
                 pass
         out = str(tempDict).replace("'","\"")
